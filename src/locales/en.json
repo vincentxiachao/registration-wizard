@@ -1,0 +1,20 @@
+{
+    "welcome": "Welcome",
+    "home": "Home",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "newPassword": "New Password",
+    "role": "Role",
+    "checkForDuplicate": "Check for duplicate ",
+    "checking": "Checking...",
+    "duplicateUsername":"Duplicate username",
+    "backToHome": "Back to Home",
+    "errorPageMsg": "Sorry, the page you are looking for does not exist."
+  }
