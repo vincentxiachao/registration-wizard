@@ -23,7 +23,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "types": ["vite/client", "jest"],
-    "moduleSuffixes": ["", ".ts", ".tsx", ".d.ts", ".js", ".jsx"] 
+    "moduleSuffixes": ["", ".ts", ".tsx", ".d.ts", ".js", ".jsx"],
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "@features/*": ["src/features/*"]
+    }
   },
   "include": ["src"]
 }
