@@ -21,7 +21,7 @@ export const registerNewUser = createAsyncThunk(
       localStorage.setItem('avatar', '');
       localStorage.setItem('access_token', token);
     } catch (error) {
-      console.log('error when submitting' + error);
+      throw error;
     }
   }
 );

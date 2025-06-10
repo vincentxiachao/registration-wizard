@@ -1,4 +1,4 @@
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon } from '@mui/material';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { Outlet } from 'react-router';
 import GTranslateIcon from '@mui/icons-material/GTranslate';

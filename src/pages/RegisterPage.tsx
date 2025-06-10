@@ -6,6 +6,7 @@ import {
   Button,
   Typography,
   Box,
+  Snackbar,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -24,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function RegisterPage() {
   const { t } = useTranslation();
+  const [showSnackbar, setShowSnackbar] = useState(false); // State to control snackbar visibility
   const isBasicInfoFilled = useSelector(selectIsBasicInfoFilled);
   const isDetailsFilled = useSelector(selectIsDetailsFilled);
   const isAccountInfoValid = useSelector(selectIsAccountInfoValid);
@@ -59,6 +61,7 @@ export default function RegisterPage() {
     try {
       dispatch(registerNewUser());
     } catch (error) {
+      setShowSnackbar(true);
       console.log(error);
     }
   };
@@ -128,6 +131,13 @@ export default function RegisterPage() {
             </Box>
           </>
         )}
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={showSnackbar}
+          message={`${t('failToRegister')}`}
+          key={'bottomright'}
+          onClose={() => setShowSnackbar(false)}
+        />
       </Box>
     </main>
   );

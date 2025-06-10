@@ -34,7 +34,7 @@ export default function UploadAvatars({
     <ButtonBase
       component='label'
       role={undefined}
-      tabIndex={-1} // prevent label from tab focus
+      tabIndex={-1}
       aria-label='Avatar image'
       sx={{
         borderRadius: '60px',
