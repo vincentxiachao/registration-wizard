@@ -7,17 +7,25 @@ import type { ICountryType } from '@utils/interfaces/countryType';
 export const registerNewUser = createAsyncThunk(
   'registerSlice/registerNewUser',
   async (_, { getState }) => {
-    const state = getState() as RootState;
-    const registerInfo = {
-      email: state.registerAccount.registerInfo.email,
-      selectDateOfBirth: state.registerAccount.registerInfo.dateOfBirth,
-      password: state.registerAccount.password,
-      confirmPassword: state.registerAccount.confirmPassword,
-    };
-    return post('registerNewUser', registerInfo);
+    try {
+      const state = getState() as RootState;
+      const stateBody = state.registerAccount.registerInfo;
+      const submitBody = {
+        password: encrypt(state.registerAccount.password),
+        ...stateBody,
+      };
+      const response = await post('registerNewUser', submitBody);
+      console.log(response);
+      console.log('submission succeed!');
+      localStorage.setItem('avatar', '');
+    } catch (error) {
+      console.log('error when submitting' + error);
+    }
   }
 );
-
+function encrypt(data: string) {
+  return 'fake-encryption' + data;
+}
 export const checkDuplicateEmail = createAsyncThunk(
   'checkDuplicateEmail',
   async (_, { getState }) => {
@@ -63,12 +71,16 @@ const registerSlice = createSlice({
       state.registerInfo.lastName = action.payload;
       return state;
     },
+    fillDateOfBirth: (state, action) => {
+      state.registerInfo.dateOfBirth = action.payload;
+      return state;
+    },
     fillPassword: (state, action) => {
-      state.password = action.payload.password;
+      state.password = action.payload;
       return state;
     },
     fillConfirmPassword: (state, action) => {
-      state.confirmPassword = action.payload.confirmPassword;
+      state.confirmPassword = action.payload;
       return state;
     },
     fillCountry: (state, action) => {
@@ -90,8 +102,6 @@ const registerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(registerNewUser.fulfilled, (state, action) => {
-      state.registerInfo = action.payload;
-      state.isLoggedIn = true;
       return state;
     });
 
@@ -115,10 +125,11 @@ export const {
   fillGender,
   fillEmail,
   fillAvatar,
+  fillDateOfBirth,
 } = registerSlice.actions;
 //selectors
-export const selectBasicInfo = (state: registerState) =>
-  state.registerAccount.registerInfo;
+export const selectRegisterState = (state: registerState) =>
+  state.registerAccount;
 export const selectFirstName = (state: registerState) => {
   return state.registerAccount.registerInfo.firstName;
 };
@@ -175,9 +186,7 @@ export const selectIsAccountInfoValid = (state: registerState) => {
     password === confirmPassword;
   return valid;
 };
-export const selectDuplicateBasicInfo = (state: registerState) => {
-  return state.registerAccount.duplicateBasicInfo;
-};
+
 export const selectDuplicateEmail = (state: registerState) => {
   return state.registerAccount.duplicateEmail;
 };

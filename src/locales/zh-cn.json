@@ -15,8 +15,19 @@
     "role": "角色",
     "checkForDuplicate": "检查重复",
     "checking": "正在检查...",
-    "duplicateUsername":"重复用户名",
+    "duplicateUsername": "重复用户名",
     "backToHome": "返回主页",
     "errorPageMsg": "抱歉，您访问的页面不存在。",
-    "dateOfBirth": "出生日期"
-  }
+    "dateOfBirth": "出生日期",
+    "male": "男",
+    "female": "女",
+    "notToSay": "我选择不透露",
+    "basicInfo": "基本信息",
+    "details": "详情",
+    "country": "国家",
+    "gender": "性别",
+    "account": "账户",
+    "email": "电子邮箱",
+    "firstName": "名字",
+    "lastName": "姓氏"
+}

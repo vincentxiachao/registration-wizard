@@ -31,7 +31,7 @@ export const RegisterAccount = () => {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // State to track password visibility
 
   const handleFillPassword = (password: string) => {
-    dispatch(fillPassword({ password }));
+    dispatch(fillPassword(password));
   };
   useEffect(() => {
     setInvalidPassword(!!password && password.length < 8);
@@ -51,7 +51,7 @@ export const RegisterAccount = () => {
   };
 
   const handleFillConfirmPassword = (confirmPassword: string) => {
-    dispatch(fillConfirmPassword({ confirmPassword }));
+    dispatch(fillConfirmPassword(confirmPassword));
   };
 
   return (
@@ -114,7 +114,7 @@ export const RegisterAccount = () => {
               variant='standard'
               error={notMatch}
               helperText={notMatch ? 'Passwords do not match' : ''}
-            />{' '}
+            />
             <SvgIcon
               sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
               className='cursor-pointer'

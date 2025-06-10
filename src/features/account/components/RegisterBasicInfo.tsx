@@ -7,11 +7,12 @@ import {
   fillBasicInfo,
   fillFirstName,
   fillLastName,
-  selectBasicInfo,
+  selectRegisterState,
   selectDateOfBirth,
   selectDuplicateUsername,
   selectFirstName,
   selectLastName,
+  fillDateOfBirth,
 } from '../registerSlice';
 import { usePreventDefault } from '@utils/hooks/usePreventDefault';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -26,7 +27,7 @@ export const RegisterBasicInfo = () => {
   const isDuplicateUsername = useSelector(selectDuplicateUsername);
   const [firstNameTouched, setFirstNameTouched] = useState(false);
   const [lastNameTouched, setLastNameTouched] = useState(false);
-  const basicInfo = useSelector(selectBasicInfo);
+  const basicInfo = useSelector(selectRegisterState);
   const dispatch = useDispatch<AppDispatch>();
 
   const onUserNameChange = usePreventDefault(
@@ -49,12 +50,7 @@ export const RegisterBasicInfo = () => {
     dispatch(fillLastName(newVal));
   };
   const onDateOfBirthChanged = (newVal: PickerValue) => {
-    dispatch(
-      fillBasicInfo({
-        ...basicInfo,
-        dateOfBirth: newVal?.format('YYYY-MM-DD'),
-      })
-    );
+    dispatch(fillDateOfBirth(newVal?.format('YYYY-MM-DD')));
   };
 
   const urlParams = new URLSearchParams(location.search);

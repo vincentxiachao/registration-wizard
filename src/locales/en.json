@@ -20,5 +20,13 @@
     "dateOfBirth": "Date of Birth",
     "male": "Male",
     "female": "Female",
-    "notToSay": "I prefer not to say"
+    "notToSay": "I prefer not to say",
+    "basicInfo": "Basic Information",
+    "details": "Details",
+    "country": "Country",
+    "gender": "Gender",
+    "account": "Account",
+    "email": "Email Address",
+    "firstName": "First Name",
+    "lastName": "Last Name"
   }

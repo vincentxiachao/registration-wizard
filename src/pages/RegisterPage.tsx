@@ -31,14 +31,6 @@ export default function RegisterPage() {
   const [disableNext, setDisableNext] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-  const handleSubmit = () => {
-    dispatch(registerNewUser());
-  };
-
-  const debounceSubmit = useDebounce(handleSubmit, 500);
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -54,6 +46,16 @@ export default function RegisterPage() {
       setDisableNext(true);
     }
   }, [isBasicInfoFilled, isDetailsFilled, isAccountInfoValid, activeStep]);
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+  const handleSubmit = () => {
+    try {
+      dispatch(registerNewUser());
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getStepTitle = (step: number) => {
     switch (step) {
       case 0:
