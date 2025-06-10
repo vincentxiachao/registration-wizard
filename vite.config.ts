@@ -8,6 +8,7 @@ export default defineConfig({
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     alias: {
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@features': path.resolve(__dirname, './src/features'),
     },
   },
 });

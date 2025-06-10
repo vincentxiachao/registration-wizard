@@ -8,8 +8,9 @@ import Home from './pages/Home';
 import { ErrorPage } from './pages/ErrorPage';
 import { I18nextProvider } from 'react-i18next';
 import i18next from './i18n';
-import LoginPage from './pages/LoginPage';
+import { store as rootStore } from './store';
 import RegisterPage from './pages/RegisterPage';
+import { Provider } from 'react-redux';
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <I18nextProvider i18n={i18next}>
-      <RouterProvider router={router} />
+      <Provider store={rootStore}>
+        <RouterProvider router={router} />
+      </Provider>
     </I18nextProvider>
   </StrictMode>
 );

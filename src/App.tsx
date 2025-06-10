@@ -2,12 +2,9 @@ import { useEffect } from 'react';
 import './App.css';
 import { Outlet, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FamilyRestroomOutlinedIcon from '@mui/icons-material/FamilyRestroomOutlined';
 import AppRegistrationOutlined from '@mui/icons-material/AppRegistrationOutlined';
-import { PageContainer, type Navigation } from '@toolpad/core';
+import { type Navigation } from '@toolpad/core';
 import { ReactRouterAppProvider } from '@toolpad/core/react-router';
-import type { AppDispatch } from './store';
 import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
 

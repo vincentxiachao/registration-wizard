@@ -1,30 +1,39 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { get, post } from '../../utils/apiInterceptor';
+import type { IregisterInfo } from '../../utils/interfaces/account';
 import { type RootState } from '../../store';
-
+import daysjs from 'dayjs';
 export const registerNewUser = createAsyncThunk(
   'registerSlice/registerNewUser',
   async (_, { getState }) => {
-    const state = getState() as RootState; // 假设 RootState 是从 store 导出的类型
+    const state = getState() as RootState;
     const registerInfo = {
       role: state.registerAccount.registerInfo.role,
       email: state.registerAccount.registerInfo.email,
       username: state.registerAccount.registerInfo.username,
-      nickName: state.registerAccount.registerInfo.nickName,
+      selectDateOfBirth: state.registerAccount.registerInfo.dateOfBirth,
       password: state.registerAccount.password,
       confirmPassword: state.registerAccount.confirmPassword,
     };
     return post('registerNewUser', registerInfo);
   }
 );
-export const checkDuplicateRegisterInfo = createAsyncThunk(
-  'checkDuplicateRegisterInfo',
+export const checkDuplicateUsername = createAsyncThunk(
+  'checkDuplicateUsername',
   async (_, { getState }) => {
     const state = getState() as RootState;
     const username = state.registerAccount.registerInfo.username;
-    const email = state.registerAccount.registerInfo.email;
     return get('checkDuplicateUsername', {
       username: username.trim().toLowerCase(),
+    });
+  }
+);
+export const checkDuplicateEmail = createAsyncThunk(
+  'checkDuplicateEmail',
+  async (_, { getState }) => {
+    const state = getState() as RootState;
+    const email = state.registerAccount.registerInfo.email;
+    return get('checkDuplicateEmail', {
       email: email.trim().toLowerCase(),
     });
   }
@@ -36,13 +45,16 @@ const registerSlice = createSlice({
       role: null,
       email: '',
       username: '',
-      nickName: '',
+      dateOfBirth: daysjs().format('YYYY-MM-DD'),
+      country: '',
+      gender: null,
     },
     password: '',
     confirmPassword: '',
     isLoggedIn: false,
     error: null,
-    duplicateBasicInfo: false,
+    duplicateUsername: false,
+    duplicateEmail: false,
   },
   reducers: {
     selectRole: (state, action) => {
@@ -52,7 +64,7 @@ const registerSlice = createSlice({
     fillBasicInfo: (state, action) => {
       state.registerInfo.email = action.payload.email;
       state.registerInfo.username = action.payload.username;
-      state.registerInfo.nickName = action.payload.nickName;
+      state.registerInfo.dateOfBirth = action.payload.dateOfBirth;
       return state;
     },
     fillPassword: (state, action) => {
@@ -63,6 +75,18 @@ const registerSlice = createSlice({
       state.confirmPassword = action.payload.confirmPassword;
       return state;
     },
+    fillCountry: (state, action) => {
+      state.registerInfo.country = action.payload;
+      return state;
+    },
+    fillGender: (state, action) => {
+      state.registerInfo.gender = action.payload;
+      return state;
+    },
+    fillEmail: (state, action) => {
+      state.registerInfo.email = action.payload;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerNewUser.fulfilled, (state, action) => {
@@ -70,8 +94,13 @@ const registerSlice = createSlice({
       state.isLoggedIn = true;
       return state;
     });
-    builder.addCase(checkDuplicateRegisterInfo.fulfilled, (state, action) => {
-      state.duplicateBasicInfo =
+    builder.addCase(checkDuplicateUsername.fulfilled, (state, action) => {
+      state.duplicateUsername =
+        Array.isArray(action.payload) && action.payload.length > 0;
+      return state;
+    });
+    builder.addCase(checkDuplicateEmail.fulfilled, (state, action) => {
+      state.duplicateEmail =
         Array.isArray(action.payload) && action.payload.length > 0;
       return state;
     });
@@ -80,24 +109,54 @@ const registerSlice = createSlice({
 //reducers
 export default registerSlice.reducer;
 //actions
-export const { selectRole, fillBasicInfo, fillPassword, fillConfirmPassword } =
-  registerSlice.actions;
+export const {
+  selectRole,
+  fillBasicInfo,
+  fillPassword,
+  fillConfirmPassword,
+  fillCountry,
+  fillGender,
+  fillEmail,
+} = registerSlice.actions;
 //selectors
-export const selectSelectedRole = (state: registerState) =>
-  state.registerAccount.registerInfo.role;
-export const selectIsRoleSelected = (state: registerState) =>
-  state.registerAccount.registerInfo.role !== null;
 export const selectBasicInfo = (state: registerState) =>
   state.registerAccount.registerInfo;
 export const selectPassword = (state: registerState) =>
   state.registerAccount.password;
 export const selectConfirmPassword = (state: registerState) =>
   state.registerAccount.confirmPassword;
-export const selectAllRrequiredBasicInfoFilled = (state: registerState) => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const { email, username } = state.registerAccount.registerInfo;
-  const invalid = !emailRegex.test(email);
-  return email && username && !invalid;
+export const selectDateOfBirth = (state: registerState) => {
+  return state.registerAccount.registerInfo.dateOfBirth;
+};
+export const seletGender = (state: registerState) => {
+  return state.registerAccount.registerInfo.gender;
+};
+export const selectCountry = (state: registerState) => {
+  return state.registerAccount.registerInfo.country;
+};
+export const selectEmail = (state: registerState) => {
+  return state.registerAccount.registerInfo.email;
+};
+export const selectInvalidEmail = (state: registerState) => {
+  return !validateEmail(state.registerAccount.registerInfo.email);
+};
+export const selectAccountFilled = (state: registerState) => {
+  const { email } = state.registerAccount.registerInfo;
+  const { password, confirmPassword } = state.registerAccount;
+  if (email && password && confirmPassword && password === confirmPassword) {
+    return true;
+  }
+  return false;
+};
+export const selectIsBasicInfoFilled = (state: registerState) => {
+  // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const { dateOfBirth, username } = state.registerAccount.registerInfo;
+  const { duplicateUsername } = state.registerAccount;
+  // const invalid = !emailRegex.test(email);
+  const invalid =
+    !dateOfBirth || !username || username.length < 3 || duplicateUsername;
+  // return email && username && !invalid;
+  return !invalid;
 };
 export const selectIsPasswordValid = (state: registerState) => {
   const { password, confirmPassword } = state.registerAccount;
@@ -106,19 +165,36 @@ export const selectIsPasswordValid = (state: registerState) => {
 export const selectDuplicateBasicInfo = (state: registerState) => {
   return state.registerAccount.duplicateBasicInfo;
 };
+export const selectDuplicateEmail = (state: registerState) => {
+  return state.registerAccount.duplicateEmail;
+};
+export const selectDuplicateUsername = (state: registerState) => {
+  return state.registerAccount.duplicateUsername;
+};
+export const selectIsDetailsFilled = (state: registerState) => {
+  const { country, gender } = state.registerAccount.registerInfo;
+  return country && country.trim() !== '' && gender !== null;
+};
 
+function validateEmail(email: string) {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+}
 type registerState = {
   registerAccount: {
     registerInfo: {
       role: string;
       email: string;
       username: string;
-      nickName?: string;
+      dateOfBirth: string;
+      country: string;
+      gender: number | null;
     };
     confirmPassword: string;
     password: string;
     isLoggedIn: boolean;
     error: null;
-    duplicateBasicInfo: boolean;
+    duplicateEmail: boolean;
+    duplicateUsername: boolean;
   };
 };

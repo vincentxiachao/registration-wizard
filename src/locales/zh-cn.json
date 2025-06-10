@@ -17,5 +17,6 @@
     "checking": "正在检查...",
     "duplicateUsername":"重复用户名",
     "backToHome": "返回主页",
-    "errorPageMsg": "抱歉，您访问的页面不存在。"
+    "errorPageMsg": "抱歉，您访问的页面不存在。",
+    "dateOfBirth": "出生日期"
   }

@@ -16,5 +16,9 @@
     "checking": "Checking...",
     "duplicateUsername":"Duplicate username",
     "backToHome": "Back to Home",
-    "errorPageMsg": "Sorry, the page you are looking for does not exist."
+    "errorPageMsg": "Sorry, the page you are looking for does not exist.",
+    "dateOfBirth": "Date of Birth",
+    "male": "Male",
+    "female": "Female",
+    "notToSay": "I prefer not to say"
   }

@@ -1,1 +1,17 @@
-{}
+{
+    "checkDuplicateUsername": [
+    {
+      "username": "admin",
+      "id": "bfed"
+    },
+    {
+      "username": "chao",
+      "id": "1702"
+    }
+  ],
+  "checkDuplicateEmail": [
+    {
+      "email": "vincentxia0625@163.com",
+      "id": "bfed"
+    }]
+}
