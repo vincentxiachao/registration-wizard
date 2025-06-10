@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Stepper,
   Step,
   StepLabel,
   Button,
   Typography,
-  TextField,
   Box,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,11 +13,10 @@ import {
   selectIsAccountInfoValid,
   selectIsBasicInfoFilled,
   selectIsDetailsFilled,
-  selectIsPasswordValid,
 } from '@features/account/registerSlice';
 import { RegisterBasicInfo } from '@features/account/components/RegisterBasicInfo';
 import { RegisterConfirm } from '@features/account/components/RegisterConfirm';
-import { useDebounce } from '@utils/hooks/useDebounce';
+
 import type { AppDispatch } from '../store';
 import { RegisterDetails } from '@features/account/components/RegisterDetails';
 import { RegisterAccount } from '@features/account/components/RegisterAccount';

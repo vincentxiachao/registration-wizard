@@ -4,14 +4,12 @@ import {
   AccordionSummary,
   Avatar,
   Box,
-  Stack,
   SvgIcon,
   Typography,
 } from '@mui/material';
 import { selectRegisterState } from '../registerSlice';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import UploadAvatars from '@utils/components/UploadAvatars';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -65,7 +63,7 @@ export const RegisterConfirm = () => {
           className='self-center mb-6'
         />
 
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <AccordionNode
             key={section.title}
             contents={section.contents}

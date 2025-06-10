@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@module-federation/vite": "^1.4.1",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@preact/signals-react": "^3.2.0",

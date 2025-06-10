@@ -1,4 +1,4 @@
-import { Autocomplete, Avatar, Box, Stack, TextField } from '@mui/material';
+import { Autocomplete, Box, Stack, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import type { ICountryType } from '@utils/interfaces/countryType';
@@ -39,8 +39,8 @@ function countrySelect() {
   const [blured, setBlured] = useState(false);
   const selectedCountry = useSelector(selectCountry);
   const onCountryChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newVal: { code: string }
+    e: React.SyntheticEvent,
+    newVal: ICountryType | null
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -73,8 +73,8 @@ function countrySelect() {
 function genderSelect() {
   const dispatch = useDispatch<AppDispatch>();
   const onGenderChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newVal: { label: string; id: number }
+    e: React.SyntheticEvent,
+    newVal: { label: string; id: number } | null
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -112,7 +112,7 @@ function genderSelect() {
               blured && selectorGender === null ? t('Gender is required') : ''
             }
             label={t('Choose a gender')}
-            onBlur={(e) => {
+            onBlur={() => {
               setBlured(true);
             }}
           />
@@ -124,7 +124,6 @@ function genderSelect() {
 function ProfilePicture() {
   const dispatch = useDispatch<AppDispatch>();
   const vatar = useSelector(selectedAvatar);
-  const [cachedAvatar, setCachedAvatar] = useState<File | null>(null);
   useEffect(() => {
     try {
       const cachedAvatar = localStorage.getItem('avatarMetadata');

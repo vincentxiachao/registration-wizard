@@ -4,17 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../../../store';
 import {
-  fillBasicInfo,
   fillFirstName,
   fillLastName,
-  selectRegisterState,
   selectDateOfBirth,
   selectDuplicateUsername,
   selectFirstName,
   selectLastName,
   fillDateOfBirth,
 } from '../registerSlice';
-import { usePreventDefault } from '@utils/hooks/usePreventDefault';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -27,14 +24,7 @@ export const RegisterBasicInfo = () => {
   const isDuplicateUsername = useSelector(selectDuplicateUsername);
   const [firstNameTouched, setFirstNameTouched] = useState(false);
   const [lastNameTouched, setLastNameTouched] = useState(false);
-  const basicInfo = useSelector(selectRegisterState);
   const dispatch = useDispatch<AppDispatch>();
-
-  const onUserNameChange = usePreventDefault(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      dispatch(fillBasicInfo({ ...basicInfo, username: e.target.value }));
-    }
-  );
 
   const { t } = useTranslation();
   const onFirstNameBlur = () => {
@@ -81,7 +71,7 @@ export const RegisterBasicInfo = () => {
             margin='normal'
             variant='standard'
             required
-            error={firstName === '' && firstNameTouched}
+            error={lastName === '' && lastNameTouched}
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
           />
           <div>

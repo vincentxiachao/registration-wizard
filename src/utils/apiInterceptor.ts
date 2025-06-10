@@ -4,7 +4,7 @@ const baseURL = 'http://localhost:3000';
 const apiClient = axios.create({ baseURL: baseURL });
 function configInterceptors() {
   const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('pyoneer-token');
+    const token = localStorage.getItem('payoneer-token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -15,7 +15,7 @@ function configInterceptors() {
   };
   const errorInterceptor = (error: any) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('pyoneer-token');
+      localStorage.removeItem('payoneer-token');
       window.location.href = '/error';
     } else {
       return Promise.reject(error);

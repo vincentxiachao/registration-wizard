@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { get, post } from '../../utils/apiInterceptor';
-import type { IregisterInfo } from '../../utils/interfaces/account';
 import { type RootState } from '../../store';
 import daysjs from 'dayjs';
 import type { ICountryType } from '@utils/interfaces/countryType';
@@ -101,7 +100,7 @@ const registerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(registerNewUser.fulfilled, (state, action) => {
+    builder.addCase(registerNewUser.fulfilled, (state) => {
       return state;
     });
 

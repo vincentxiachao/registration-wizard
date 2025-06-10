@@ -1,6 +1,5 @@
-import React from 'react';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { Box, Typography, IconButton, Paper, Button } from '@mui/material';
+import { Box, Typography, IconButton, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
