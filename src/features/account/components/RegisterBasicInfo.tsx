@@ -1,15 +1,17 @@
 import { Box, Stack, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../../../store';
 import {
-  checkDuplicateUsername,
   fillBasicInfo,
+  fillFirstName,
+  fillLastName,
   selectBasicInfo,
   selectDateOfBirth,
-  selectDuplicateBasicInfo,
   selectDuplicateUsername,
+  selectFirstName,
+  selectLastName,
 } from '../registerSlice';
 import { usePreventDefault } from '@utils/hooks/usePreventDefault';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -18,10 +20,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import type { PickerValue } from 'node_modules/@mui/x-date-pickers/esm/internals/models/value';
 export const RegisterBasicInfo = () => {
-  const username = useSelector(selectBasicInfo).username;
-  const dateOfBirth = useSelector(selectBasicInfo).dateOfBirth;
+  const firstName = useSelector(selectFirstName);
+  const lastName = useSelector(selectLastName);
+  const dateOfBirth = useSelector(selectDateOfBirth);
   const isDuplicateUsername = useSelector(selectDuplicateUsername);
-  const [usernameTouched, setUsernameTouched] = useState(false);
+  const [firstNameTouched, setFirstNameTouched] = useState(false);
+  const [lastNameTouched, setLastNameTouched] = useState(false);
   const basicInfo = useSelector(selectBasicInfo);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,9 +36,17 @@ export const RegisterBasicInfo = () => {
   );
 
   const { t } = useTranslation();
-  const onUsernameBlur = () => {
-    setUsernameTouched(true);
-    dispatch(checkDuplicateUsername());
+  const onFirstNameBlur = () => {
+    setFirstNameTouched(true);
+  };
+  const onLastNameBlur = () => {
+    setLastNameTouched(true);
+  };
+  const onFirstNameChanged = (newVal: string) => {
+    dispatch(fillFirstName(newVal));
+  };
+  const onLastNameChanged = (newVal: string) => {
+    dispatch(fillLastName(newVal));
   };
   const onDateOfBirthChanged = (newVal: PickerValue) => {
     dispatch(
@@ -51,17 +63,29 @@ export const RegisterBasicInfo = () => {
   return (
     <>
       <Box className='flex h-full flex-col content-center justify-center'>
-        <Stack className='w-1/2' spacing={2}>
+        <Stack className='w-1/2' spacing={4}>
           <TextField
-            label={t('username')}
-            name='username'
-            value={username}
-            onChange={(e) => onUserNameChange(e)}
-            onBlur={() => onUsernameBlur()}
+            label={t('firstName')}
+            name='firstName'
+            value={firstName}
+            onBlur={() => onFirstNameBlur()}
+            onChange={(e) => onFirstNameChanged(e.target.value)}
             margin='normal'
             variant='standard'
             required
-            error={(isDuplicateUsername || username === '') && usernameTouched}
+            error={firstName === '' && firstNameTouched}
+            helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
+          />
+          <TextField
+            label={t('lastName')}
+            name='lastName'
+            value={lastName}
+            onBlur={() => onLastNameBlur()}
+            onChange={(e) => onLastNameChanged(e.target.value)}
+            margin='normal'
+            variant='standard'
+            required
+            error={firstName === '' && firstNameTouched}
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
           />
           <div>

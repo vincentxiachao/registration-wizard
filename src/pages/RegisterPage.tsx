@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   registerNewUser,
+  selectIsAccountInfoValid,
   selectIsBasicInfoFilled,
   selectIsDetailsFilled,
   selectIsPasswordValid,
@@ -26,7 +27,7 @@ const steps = ['Basic Info', 'Details', 'Account', 'Confirmation'];
 export default function RegisterPage() {
   const isBasicInfoFilled = useSelector(selectIsBasicInfoFilled);
   const isDetailsFilled = useSelector(selectIsDetailsFilled);
-  const isPasswordFilled = useSelector(selectIsPasswordValid);
+  const isAccountInfoValid = useSelector(selectIsAccountInfoValid);
   const [disableNext, setDisableNext] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
@@ -45,14 +46,14 @@ export default function RegisterPage() {
     if (
       (isBasicInfoFilled && activeStep === 0) ||
       (isDetailsFilled && activeStep === 1) ||
-      (isPasswordFilled && activeStep === 2) ||
+      (isAccountInfoValid && activeStep === 2) ||
       activeStep === 3
     ) {
       setDisableNext(false);
     } else {
       setDisableNext(true);
     }
-  }, [isBasicInfoFilled, isDetailsFilled, isPasswordFilled, activeStep]);
+  }, [isBasicInfoFilled, isDetailsFilled, isAccountInfoValid, activeStep]);
   const getStepTitle = (step: number) => {
     switch (step) {
       case 0:

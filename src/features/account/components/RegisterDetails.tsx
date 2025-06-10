@@ -139,7 +139,7 @@ function ProfilePicture() {
   const render = useCallback(() => {
     return (
       <div className='self-center'>
-        <UploadAvatars onUpload={handleUpload} defaultAvatar={cachedAvatar} />
+        <UploadAvatars onUpload={handleUpload} />
       </div>
     );
   }, [vatar]);
@@ -165,11 +165,9 @@ function ProfilePicture() {
     dispatch(fillAvatar(avatarData));
 
     try {
-      // 将头像元数据存储到 localStorage 中
       localStorage.setItem('avatarMetadata', JSON.stringify(avatarData));
-      console.log('头像元数据已缓存到 localStorage');
     } catch (error) {
-      console.error('缓存头像元数据失败:', error);
+      console.error('fail to cache:', error);
     }
   };
   return render();
