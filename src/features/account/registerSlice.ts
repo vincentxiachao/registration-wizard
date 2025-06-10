@@ -3,6 +3,7 @@ import { get, post } from '../../utils/apiInterceptor';
 import type { IregisterInfo } from '../../utils/interfaces/account';
 import { type RootState } from '../../store';
 import daysjs from 'dayjs';
+import type { ICountryType } from '@utils/interfaces/countryType';
 export const registerNewUser = createAsyncThunk(
   'registerSlice/registerNewUser',
   async (_, { getState }) => {
@@ -48,6 +49,7 @@ const registerSlice = createSlice({
       dateOfBirth: daysjs().format('YYYY-MM-DD'),
       country: '',
       gender: null,
+      avatar: null,
     },
     password: '',
     confirmPassword: '',
@@ -87,6 +89,10 @@ const registerSlice = createSlice({
       state.registerInfo.email = action.payload;
       return state;
     },
+    fillAvatar: (state, action) => {
+      state.registerInfo.avatar = action.payload;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerNewUser.fulfilled, (state, action) => {
@@ -117,6 +123,7 @@ export const {
   fillCountry,
   fillGender,
   fillEmail,
+  fillAvatar,
 } = registerSlice.actions;
 //selectors
 export const selectBasicInfo = (state: registerState) =>
@@ -173,9 +180,11 @@ export const selectDuplicateUsername = (state: registerState) => {
 };
 export const selectIsDetailsFilled = (state: registerState) => {
   const { country, gender } = state.registerAccount.registerInfo;
-  return country && country.trim() !== '' && gender !== null;
+  return country !== null && gender !== null;
 };
-
+export const selectedAvatar = (state: registerState) => {
+  return state.registerAccount.registerInfo.avatar;
+};
 function validateEmail(email: string) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
@@ -187,8 +196,15 @@ type registerState = {
       email: string;
       username: string;
       dateOfBirth: string;
-      country: string;
-      gender: number | null;
+      country: ICountryType | null;
+      gender: { label: string; id: number } | null;
+      avatar: {
+        id: string;
+        name: string;
+        type: string;
+        size: number;
+        lastModified: number;
+      } | null;
     };
     confirmPassword: string;
     password: string;
