@@ -133,7 +133,7 @@ function ProfilePicture() {
         dispatch(fillAvatar(avatarData));
       }
     } catch (error) {
-      console.error('恢复头像元数据失败:', error);
+      console.error('fail to restall avatar:', error);
     }
   }, []);
   const render = useCallback(() => {

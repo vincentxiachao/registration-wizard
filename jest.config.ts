@@ -21,15 +21,25 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'jest-environment-jsdom',
   transform: {
-    '^.+\.(ts|tsx)$': [
+    '^.+\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: '<rootDir>/tsconfig.test.json',
         useESM: true,
+        isolatedModules: true,
       },
     ],
   },
   testPathIgnorePatterns: ['\\.history\\'],
+  moduleNameMapper: {
+    '\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    // 修改映射规则，避免强制将 .js 文件转为 .mjs 文件
+    // '^(.+\.js)$': '$1.mjs',
+    // '^(\.{1,2}/.*)\.js$': '$1.mjs',
+    '^(.+\.js)$': '$1',
+    '^(\.{1,2}/.*)\.js$': '$1',
+  },
+  setupFiles: ['<rootDir>/jest.setup.js'],
+  transformIgnorePatterns: ['node_modules/(?!(.*\.mjs$|.*\.esm$))'],
 };
 
 export default config;
