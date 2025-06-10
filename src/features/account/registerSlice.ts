@@ -45,7 +45,7 @@ const registerSlice = createSlice({
       email: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: daysjs().format('YYYY-MM-DD'),
+      dateOfBirth: daysjs().format('1988-06-25'),
       country: '',
       gender: null,
       avatar: null,

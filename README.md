@@ -42,3 +42,11 @@ npm test
 ```bash
 npx jest __tests__/features/account/registerSlice.test.ts
 ```
+
+## React scanner
+
+```bash
+npm run scan
+```
+
+### Put your sunglasses on :)
