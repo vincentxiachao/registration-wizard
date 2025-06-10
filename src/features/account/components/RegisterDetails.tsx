@@ -23,8 +23,8 @@ export const RegisterDetails = () => {
   }, [seletGender]);
   return (
     <>
-      <Box className='flex h-full flex-col content-center justify-center'>
-        <Stack className='w-1/2' spacing={2}>
+      <Box className='flex h-full flex-col items-center justify-center'>
+        <Stack className='w-1/2' spacing={6}>
           <ProfilePicture />
           <CountrySelect />
           <GenderSelect />
@@ -52,7 +52,7 @@ function countrySelect() {
       options={countries}
       value={selectedCountry}
       getOptionLabel={(option: ICountryType) =>
-        option ? `${option.label} (${option.code}) +${option.phone}` : ''
+        option ? `${option.label} (${option.code})` : ''
       }
       isOptionEqualToValue={(option, value) => option.code === value.code}
       onChange={(e, newVal) => {
@@ -88,9 +88,9 @@ function genderSelect() {
   const [blured, setBlured] = useState(false);
   const selectorGender = useSelector(seletGender);
   const options = [
-    { label: t('Male'), id: 0 },
-    { label: t('Female'), id: 1 },
-    { label: t('I prefer not to say'), id: 2 },
+    { label: t('male'), id: 0 },
+    { label: t('female'), id: 1 },
+    { label: t('notToSay'), id: 2 },
   ];
 
   return (
@@ -109,9 +109,9 @@ function genderSelect() {
             required
             value={selectorGender}
             helperText={
-              blured && selectorGender === null ? t('Gender is required') : ''
+              blured && selectorGender === null ? t('genderIsRequired') : ''
             }
-            label={t('Choose a gender')}
+            label={t('chooseGender')}
             onBlur={() => {
               setBlured(true);
             }}

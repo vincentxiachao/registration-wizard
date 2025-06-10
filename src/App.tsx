@@ -19,24 +19,20 @@ function App() {
   }, [lang]);
   const sideNav: Navigation = [
     {
-      kind: 'header',
-      title: 'Main items',
-    },
-    {
       segment: 'home', // This will be the segment in the URL, e.g. /hom
       title: `${t('home')}`,
       icon: <DashboardIcon />,
     },
     {
       segment: 'register',
-      title: 'Register',
+      title: `${t('register')}`,
       icon: <AppRegistrationOutlined />,
     },
   ];
 
   const branding = {
     logo: <img src='./public/logo.png' alt='Payoneer' />,
-    title: 'Payoneer assignment',
+    title: `${t('payoneerAssignment')}`,
     homeUrl: '/home',
   };
   return (

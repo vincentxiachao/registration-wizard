@@ -28,5 +28,22 @@
     "account": "Account",
     "email": "Email Address",
     "firstName": "First Name",
-    "lastName": "Last Name"
+    "lastName": "Last Name",
+    "payoneerAssignment": "Payoneer Assignment",
+    "moreAboutYou": "More about you",
+    "accountInfo": "Account Information",
+    "confirmation": "Confirmation",
+    "unknown": "Unknown",
+    "selectCountry": "Select Country",
+    "chooseGender": "Choose a Gender",
+    "genderIsRequired": "Gender is required",
+    "passwordNotMatch": "Passwords do not match",
+    "invalidEmail": "Invalid email address",
+    "emailAlreadyExists": "Email already exists",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "invalidDate": "Date of birth is invalid"
+
   }

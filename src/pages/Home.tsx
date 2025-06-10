@@ -1,10 +1,11 @@
-import { Box } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
+  const { t } = useTranslation();
   return (
-    <Box className='h-full'>
-      <h1>Payoneer Assignment</h1>
-      <p>Home page</p>
+    <Box className='h-full w-full flex items-center justify-center'>
+      <Typography variant='h3'>{t('payoneerAssignment')}</Typography>
     </Box>
   );
 }

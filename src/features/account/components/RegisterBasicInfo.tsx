@@ -1,4 +1,4 @@
-import { Box, Stack, TextField } from '@mui/material';
+import { Box, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import {
   selectFirstName,
   selectLastName,
   fillDateOfBirth,
+  selectIsDateOfBirthValid,
 } from '../registerSlice';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,6 +23,7 @@ export const RegisterBasicInfo = () => {
   const lastName = useSelector(selectLastName);
   const dateOfBirth = useSelector(selectDateOfBirth);
   const isDuplicateUsername = useSelector(selectDuplicateUsername);
+  const isDateValid = useSelector(selectIsDateOfBirthValid);
   const [firstNameTouched, setFirstNameTouched] = useState(false);
   const [lastNameTouched, setLastNameTouched] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -49,8 +51,9 @@ export const RegisterBasicInfo = () => {
   return (
     <>
       <Box className='flex h-full flex-col content-center justify-center'>
-        <Stack className='w-1/2' spacing={4}>
+        <Stack className='w-full items-center' spacing={10}>
           <TextField
+            className='w-1/2'
             label={t('firstName')}
             name='firstName'
             value={firstName}
@@ -63,6 +66,7 @@ export const RegisterBasicInfo = () => {
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
           />
           <TextField
+            className='w-1/2'
             label={t('lastName')}
             name='lastName'
             value={lastName}
@@ -74,17 +78,25 @@ export const RegisterBasicInfo = () => {
             error={lastName === '' && lastNameTouched}
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
           />
-          <div>
+          <div className='w-1/2'>
             <LocalizationProvider
               dateAdapter={AdapterDayjs}
               adapterLocale={lang}
             >
               <DatePicker
+                className='w-10/14'
                 label={t('dateOfBirth')}
                 value={dayjs(dateOfBirth)}
                 defaultValue={dayjs('')}
                 onChange={(newValue) => onDateOfBirthChanged(newValue)}
               />
+              {isDateValid ? (
+                ''
+              ) : (
+                <Typography variant='subtitle1' sx={{ color: '#ff0000e6' }}>
+                  {t('invalidDate')}
+                </Typography>
+              )}
             </LocalizationProvider>
           </div>
         </Stack>

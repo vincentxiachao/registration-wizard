@@ -29,7 +29,7 @@ export const RegisterAccount = () => {
   const duplicateEmail = useSelector(selectDuplicateEmail);
   const [passwordVisible, setPasswordVisible] = useState(false); // State to track password visibility
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // State to track password visibility
-
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false); // State to track password visibility
   const handleFillPassword = (password: string) => {
     dispatch(fillPassword(password));
   };
@@ -56,11 +56,11 @@ export const RegisterAccount = () => {
 
   return (
     <>
-      <Box className='flex h-full flex-col content-center justify-center'>
-        <Stack className='' spacing={2}>
+      <Box className='flex h-full flex-col items-center content-center justify-center'>
+        <Stack className='w-1/2 ' spacing={2}>
           <TextField
             label='E-mail'
-            className='mb-4 w-1/2'
+            className='mb-4 '
             name='email'
             type='email'
             value={email}
@@ -71,9 +71,9 @@ export const RegisterAccount = () => {
             variant='standard'
             helperText={
               invalidEmail
-                ? 'Invalid email address'
+                ? `${t('invalidEmail')}`
                 : duplicateEmail
-                  ? 'Email already exists'
+                  ? `${t('emailAlreadyExists')}`
                   : ''
             }
             error={(invalidEmail && emailTouched) || duplicateEmail}
@@ -85,13 +85,11 @@ export const RegisterAccount = () => {
               type={passwordVisible ? 'text' : 'password'}
               value={password}
               onChange={(e) => handleFillPassword(e.target.value)}
-              className='mb-4 w-1/2'
+              className='mb-4 w-full'
               margin='normal'
               error={invalidPassword}
               variant='standard'
-              helperText={
-                invalidPassword ? 'Password must be at least 8 characters' : ''
-              }
+              helperText={invalidPassword ? `${t('passwordTooShort')}` : ''}
             />
             <SvgIcon
               sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -109,11 +107,18 @@ export const RegisterAccount = () => {
               type={confirmPasswordVisible ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => handleFillConfirmPassword(e.target.value)}
-              className='mb-4 w-1/2'
+              onBlur={() => {
+                setConfirmPasswordTouched(true);
+              }}
+              className='mb-4 w-full'
               margin='normal'
               variant='standard'
-              error={notMatch}
-              helperText={notMatch ? 'Passwords do not match' : ''}
+              error={notMatch && confirmPasswordTouched}
+              helperText={
+                notMatch && confirmPasswordTouched
+                  ? `${t('passwordNotMatch')}`
+                  : ''
+              }
             />
             <SvgIcon
               sx={{ color: 'rgba(255, 255, 255, 0.54)' }}

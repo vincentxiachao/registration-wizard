@@ -14,9 +14,12 @@ export const registerNewUser = createAsyncThunk(
         ...stateBody,
       };
       const response = await post('registerNewUser', submitBody);
+
+      const token = response.data.token;
       console.log(response);
       console.log('submission succeed!');
       localStorage.setItem('avatar', '');
+      localStorage.setItem('access_token', token);
     } catch (error) {
       console.log('error when submitting' + error);
     }
@@ -150,6 +153,14 @@ export const selectCountry = (state: registerState) => {
 };
 export const selectEmail = (state: registerState) => {
   return state.registerAccount.registerInfo.email;
+};
+export const selectIsDateOfBirthValid = (state: registerState) => {
+  const { dateOfBirth } = state.registerAccount.registerInfo;
+  if (dateOfBirth) {
+    const today = new Date().getTime();
+    const selectedDate = new Date(dateOfBirth).getTime();
+    return selectedDate < today;
+  }
 };
 export const selectInvalidEmail = (state: registerState) => {
   return !validateEmail(state.registerAccount.registerInfo.email);

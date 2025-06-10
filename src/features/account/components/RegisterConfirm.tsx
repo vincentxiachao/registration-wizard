@@ -42,7 +42,10 @@ export const RegisterConfirm = () => {
       title: t('details'),
       contents: [
         { name: t('country'), value: country?.label || '' },
-        { name: t('gender'), value: gender?.label || '' },
+        {
+          name: t('gender'),
+          value: `${t(`${gender?.label.toLocaleLowerCase()}`)}` || '',
+        },
       ],
     },
     {
@@ -55,7 +58,7 @@ export const RegisterConfirm = () => {
   ];
   return (
     <>
-      <Box className='flex h-full flex-col content-center justify-center'>
+      <Box className='flex h-full flex-col items-center content-center justify-center'>
         <Avatar
           src={avatarSrc}
           alt='Payoneer'
@@ -81,43 +84,39 @@ const AccordionNode = (props: {
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1-content'
-          id={props.accordionTitle}
-        >
-          <Typography component='span'>{props.accordionTitle}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {props.contents.map((content) => {
-            return content.isPassword ? (
-              <Box className='flex flex-col' key={content.name}>
-                <Typography
-                  variant='body2'
-                  key={content.name}
-                  className={content.isPassword ? 'inline' : ''}
-                >
-                  {content.name}: {showPassword ? content.value : '********'}
-                </Typography>
+    <Accordion className='w-1/2'>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls='panel1-content'
+        id={props.accordionTitle}
+      >
+        <Typography variant='h5' component='span'>
+          {props.accordionTitle}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        {props.contents.map((content) => {
+          return content.isPassword ? (
+            <Box className='flex flex-col' key={content.name}>
+              <Typography variant='body1' align='left' key={content.name}>
+                {content.name}: {showPassword ? content.value : '********'}
                 <SvgIcon
                   sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                  className='cursor-pointer inline'
+                  className='cursor-pointer float-right'
                   aria-label={`password visibility, ${!showPassword ? 'hide password' : 'show password'}`}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </SvgIcon>
-              </Box>
-            ) : (
-              <Typography key={content.name} variant='body2'>
-                {content.name}: {content.value}
               </Typography>
-            );
-          })}
-        </AccordionDetails>
-      </Accordion>
-    </>
+            </Box>
+          ) : (
+            <Typography key={content.name} variant='body2'>
+              {content.name}: {content.value}
+            </Typography>
+          );
+        })}
+      </AccordionDetails>
+    </Accordion>
   );
 };

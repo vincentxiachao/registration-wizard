@@ -20,9 +20,10 @@ import { RegisterConfirm } from '@features/account/components/RegisterConfirm';
 import type { AppDispatch } from '../store';
 import { RegisterDetails } from '@features/account/components/RegisterDetails';
 import { RegisterAccount } from '@features/account/components/RegisterAccount';
+import { useTranslation } from 'react-i18next';
 
-const steps = ['Basic Info', 'Details', 'Account', 'Confirmation'];
 export default function RegisterPage() {
+  const { t } = useTranslation();
   const isBasicInfoFilled = useSelector(selectIsBasicInfoFilled);
   const isDetailsFilled = useSelector(selectIsDetailsFilled);
   const isAccountInfoValid = useSelector(selectIsAccountInfoValid);
@@ -47,6 +48,13 @@ export default function RegisterPage() {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
+  const steps = [
+    `${t('basicInfo')}`,
+    `${t('details')}`,
+    `${t('account')}`,
+    `${t('confirmation')}`,
+  ];
+
   const handleSubmit = () => {
     try {
       dispatch(registerNewUser());
@@ -57,15 +65,15 @@ export default function RegisterPage() {
   const getStepTitle = (step: number) => {
     switch (step) {
       case 0:
-        return 'Basic Info';
+        return `${t('basicInfo')}`;
       case 1:
-        return 'More information about yourself';
+        return `${t('moreAboutYou')}`;
       case 2:
-        return 'Account';
+        return `${t('accountInfo')}`;
       case 3:
-        return 'Confirmation';
+        return `${t('confirmation')}`;
       default:
-        return 'Unknown step';
+        return `${t('unknown')}`;
     }
   };
 
@@ -105,7 +113,7 @@ export default function RegisterPage() {
             <Box className='flex justify-end !mt-2 flex-0'>
               {activeStep > 0 && (
                 <Button onClick={handleBack} sx={{ mr: 1 }}>
-                  Previous
+                  {t('previous')}
                 </Button>
               )}
               <Button
@@ -113,7 +121,9 @@ export default function RegisterPage() {
                 onClick={activeStep === 3 ? handleSubmit : handleNext}
                 disabled={disableNext}
               >
-                {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                {activeStep === steps.length - 1
+                  ? `${t('submit')}`
+                  : `${t('next')}`}
               </Button>
             </Box>
           </>
