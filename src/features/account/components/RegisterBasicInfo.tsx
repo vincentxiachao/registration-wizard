@@ -17,6 +17,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/en';
 import type { PickerValue } from 'node_modules/@mui/x-date-pickers/esm/internals/models/value';
 export const RegisterBasicInfo = () => {
   const firstName = useSelector(selectFirstName);
@@ -45,8 +47,7 @@ export const RegisterBasicInfo = () => {
     dispatch(fillDateOfBirth(newVal?.format('YYYY-MM-DD')));
   };
 
-  const urlParams = new URLSearchParams(location.search);
-  const lang = urlParams.get('lang') || 'zh-cn';
+  const lang = useTranslation().i18n.language;
 
   return (
     <>

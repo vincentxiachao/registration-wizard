@@ -43,10 +43,11 @@ export default function RegisterPage() {
   };
   useEffect(() => {
     try {
-      const cachedState = JSON.parse(
-        localStorage.getItem('registerAccount') || ''
-      );
-      dispatch(restoreState(cachedState));
+      const cache = localStorage.getItem('registerAccount');
+      if (cache) {
+        const cachedState = JSON.parse(cache ? cache : '');
+        dispatch(restoreState(cachedState));
+      }
     } catch (error) {
       console.log(error);
     }
