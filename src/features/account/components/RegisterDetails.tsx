@@ -15,12 +15,6 @@ import { useCallback, useEffect, useState } from 'react';
 import UploadAvatars from '@utils/components/UploadAvatars';
 import { selectedAvatar } from '../registerSlice';
 export const RegisterDetails = () => {
-  const CountrySelect = useCallback(() => {
-    return countrySelect();
-  }, [selectCountry]);
-  const GenderSelect = useCallback(() => {
-    return genderSelect();
-  }, [seletGender]);
   return (
     <>
       <Box className='flex h-full flex-col items-center justify-center'>
@@ -33,7 +27,7 @@ export const RegisterDetails = () => {
     </>
   );
 };
-function countrySelect() {
+function CountrySelect() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const [blured, setBlured] = useState(false);
@@ -70,7 +64,7 @@ function countrySelect() {
     />
   );
 }
-function genderSelect() {
+function GenderSelect() {
   const dispatch = useDispatch<AppDispatch>();
   const onGenderChange = (
     e: React.SyntheticEvent,
@@ -100,6 +94,9 @@ function genderSelect() {
         onChange={(e, newVal) => {
           onGenderChange(e, newVal);
         }}
+        getOptionLabel={(option) =>
+          option ? `${t('selectGender_' + option.id)} ` : ''
+        }
         value={selectorGender}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         renderInput={(params) => (

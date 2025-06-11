@@ -101,6 +101,14 @@ const registerSlice = createSlice({
       state.registerInfo.avatar = action.payload;
       return state;
     },
+    cacheState: (state) => {
+      localStorage.setItem('registerAccount', JSON.stringify(state));
+      return state;
+    },
+    restoreState: (state, action) => {
+      state = action.payload;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerNewUser.fulfilled, (state) => {
@@ -128,6 +136,8 @@ export const {
   fillEmail,
   fillAvatar,
   fillDateOfBirth,
+  cacheState,
+  restoreState,
 } = registerSlice.actions;
 //selectors
 export const selectRegisterState = (state: registerState) =>

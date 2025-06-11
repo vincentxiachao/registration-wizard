@@ -19,6 +19,7 @@ export default function UploadAvatars({
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      localStorage.removeItem('avatar');
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result as string;

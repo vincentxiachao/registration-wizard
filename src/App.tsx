@@ -11,12 +11,12 @@ import { useTranslation } from 'react-i18next';
 function App() {
   const { t } = useTranslation();
   const location = useLocation();
-  const urlParams = new URLSearchParams(location.search);
-  const lang = urlParams.get('lang') || 'en';
-
   useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const lang = urlParams.get('lang') || 'en';
     i18n.changeLanguage(lang);
-  }, [lang]);
+  }, []);
+
   const sideNav: Navigation = [
     {
       segment: 'home', // This will be the segment in the URL, e.g. /hom

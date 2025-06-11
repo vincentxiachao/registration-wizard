@@ -10,7 +10,9 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  cacheState,
   registerNewUser,
+  restoreState,
   selectIsAccountInfoValid,
   selectIsBasicInfoFilled,
   selectIsDetailsFilled,
@@ -22,6 +24,7 @@ import type { AppDispatch } from '../store';
 import { RegisterDetails } from '@features/account/components/RegisterDetails';
 import { RegisterAccount } from '@features/account/components/RegisterAccount';
 import { useTranslation } from 'react-i18next';
+import { useDebounce } from '@utils/hooks/useDebounce';
 
 export default function RegisterPage() {
   const { t } = useTranslation();
@@ -36,6 +39,20 @@ export default function RegisterPage() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   useEffect(() => {
+    try {
+      const cachedState = JSON.parse(
+        localStorage.getItem('registerAccount') || ''
+      );
+      dispatch(restoreState(cachedState));
+    } catch (error) {
+      console.log(error);
+    }
+
+    return () => {
+      localStorage.setItem('avatar', '');
+    };
+  }, []);
+  useEffect(() => {
     if (
       (isBasicInfoFilled && activeStep === 0) ||
       (isDetailsFilled && activeStep === 1) ||
@@ -48,6 +65,7 @@ export default function RegisterPage() {
     }
   }, [isBasicInfoFilled, isDetailsFilled, isAccountInfoValid, activeStep]);
   const handleNext = () => {
+    dispatch(cacheState());
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
   const steps = [
@@ -57,14 +75,14 @@ export default function RegisterPage() {
     `${t('confirmation')}`,
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = useDebounce(() => {
     try {
       dispatch(registerNewUser());
     } catch (error) {
       setShowSnackbar(true);
       console.log(error);
     }
-  };
+  });
   const getStepTitle = (step: number) => {
     switch (step) {
       case 0:
