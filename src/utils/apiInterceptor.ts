@@ -34,24 +34,15 @@ export const get = async <T, P extends string | number | boolean>(
   const res = await apiClient.get<T>(url, { params: params });
   return res.data;
 };
-export const post = async <P extends string | number | boolean | null>(
-  url: string,
-  data?: Record<string, P>
-) => {
+export const post = async (url: string, data?: Record<string, unknown>) => {
   const res = await apiClient.post(url, data);
   return res.data;
 };
-export const put = async <P extends string | number | boolean>(
-  url: string,
-  data?: Record<string, P>
-) => {
+export const put = async (url: string, data?: Record<string, unknown>) => {
   const res = await apiClient.put(url, data);
   return res.data;
 };
-export const patch = async <P extends string | number | boolean>(
-  url: string,
-  data?: Record<string, P>
-) => {
+export const patch = async (url: string, data?: Record<string, unknown>) => {
   const res = await apiClient.patch(url, data);
   return res.data;
 };

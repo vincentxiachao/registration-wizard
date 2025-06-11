@@ -8,14 +8,3 @@ export const store = configureStore({
     registerAccount: registerReducer,
   },
 });
-export type AppStore = ReturnType<typeof setupStore>;
-const rootReducer = {
-  registerAccount: registerReducer,
-};
-//for UT mock store
-export const setupStore = (preloadedState = {}) => {
-  return configureStore({
-    reducer: rootReducer,
-    preloadedState,
-  });
-};
