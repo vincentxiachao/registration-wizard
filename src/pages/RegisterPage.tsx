@@ -47,7 +47,6 @@ export default function RegisterPage() {
     } catch (error) {
       console.log(error);
     }
-
     return () => {
       localStorage.setItem('avatar', '');
     };
