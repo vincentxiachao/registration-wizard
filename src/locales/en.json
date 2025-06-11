@@ -29,7 +29,7 @@
     "email": "Email Address",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "payoneerAssignment": "Payoneer Assignment",
+    "appName": "Registration Wizard",
     "moreAboutYou": "More about you",
     "accountInfo": "Account Information",
     "confirmation": "Confirmation",

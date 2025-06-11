@@ -36,10 +36,6 @@ const initialState = {
   duplicateEmail: false,
 };
 
-const middlewares = [thunk];
-const createMockStore = setupStore(middlewares);
-const mockStore = createMockStore;
-
 describe('registerSlice reducers', () => {
   it('should handle fillBasicInfo', () => {
     const action = fillBasicInfo({

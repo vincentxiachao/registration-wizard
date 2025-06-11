@@ -31,8 +31,8 @@ function App() {
   ];
 
   const branding = {
-    logo: <img src='./public/logo.png' alt='Payoneer' />,
-    title: `${t('payoneerAssignment')}`,
+    logo: <img src='./public/vite.svg' alt='Registration Wizard' />,
+    title: `${t('appName')}`,
     homeUrl: '/home',
   };
   return (

@@ -1,8 +1,8 @@
-# Payoneer Homework Project
+# Registration Wizard Application
 
 ## Project Overview
 
-This project is a homework assignment for Payoneer, implementing registration process. The project is built using React, TypeScript, Redux Toolkit, and JSON Server for data management. The project also includes unit tests using Jest and React Testing Library.
+This project is a registration wizard application. The project is built using React, TypeScript, Redux Toolkit, and JSON Server for data management. The project also includes unit tests using Jest and React Testing Library.
 
 ## Environment Setup
 

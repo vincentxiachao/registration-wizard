@@ -11,11 +11,11 @@ import i18next from './i18n';
 import { store as rootStore } from './store';
 import RegisterPage from './pages/RegisterPage';
 import { Provider } from 'react-redux';
+import { redirect } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
     Component: App,
-    // 添加错误边界路由
     errorElement: <ErrorPage />,
     children: [
       {
@@ -28,6 +28,7 @@ const router = createBrowserRouter([
             path: 'register',
             Component: RegisterPage,
           },
+          { path: '', loader: () => redirect('/home') },
         ],
       },
     ],
