@@ -70,7 +70,7 @@ export const RegisterAccount = () => {
             required
             variant='standard'
             helperText={
-              invalidEmail
+              invalidEmail && emailTouched
                 ? `${t('invalidEmail')}`
                 : duplicateEmail
                   ? `${t('emailAlreadyExists')}`
