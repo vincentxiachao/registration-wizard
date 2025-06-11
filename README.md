@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a registration wizard application. The project is built using React, TypeScript, Redux Toolkit, and JSON Server for data management. The project also includes unit tests using Jest and React Testing Library.
+This project is a registration wizard application. The project is built using React, TypeScript, Redux Toolkit, and JSON Server for data management. The project also includes unit tests using Vitest and React Testing Library.
 
 ## Environment Setup
 
@@ -35,12 +35,6 @@ npm run dev
 
 ```bash
 npm test
-```
-
-### Or if you want to run single file
-
-```bash
-npx jest __tests__/features/account/registerSlice.test.ts
 ```
 
 ## React scanner
