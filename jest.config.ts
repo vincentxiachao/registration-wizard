@@ -21,7 +21,7 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'jest-environment-jsdom',
   transform: {
-    '^.+\.tsx?$': [
+    '^.+.tsx?$': [
       'ts-jest',
       {
         useESM: true,
@@ -29,17 +29,17 @@ const config: Config = {
       },
     ],
   },
-  testPathIgnorePatterns: ['\\.history\\'],
+  testPathIgnorePatterns: ['.history\\'],
   moduleNameMapper: {
-    '\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '.(css|less|scss|sass)$': 'identity-obj-proxy',
     // 修改映射规则，避免强制将 .js 文件转为 .mjs 文件
     // '^(.+\.js)$': '$1.mjs',
     // '^(\.{1,2}/.*)\.js$': '$1.mjs',
-    '^(.+\.js)$': '$1',
-    '^(\.{1,2}/.*)\.js$': '$1',
+    '^(.+.js)$': '$1',
+    '^(.{1,2}/.*).js$': '$1',
   },
   setupFiles: ['<rootDir>/jest.setup.js'],
-  transformIgnorePatterns: ['node_modules/(?!(.*\.mjs$|.*\.esm$))'],
+  transformIgnorePatterns: ['node_modules/(?!(.*.mjs$|.*.esm$))'],
 };
 
 export default config;

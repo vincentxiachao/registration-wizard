@@ -1,5 +1,3 @@
-import thunk from 'redux-thunk';
-import { get, post } from '../../../src/utils/apiInterceptor';
 import registerReducer, {
   fillBasicInfo,
   fillFirstName,
@@ -12,12 +10,8 @@ import registerReducer, {
   fillEmail,
   fillAvatar,
 } from '../../../src/features/account/registerSlice';
-import { setupStore } from '../../../src/store';
 jest.mock('../../../src/utils/apiInterceptor');
-const mockGet = get as jest.Mock;
-const mockPost = post as jest.Mock;
 
-// 初始状态
 const initialState = {
   registerInfo: {
     email: '',
@@ -34,6 +28,7 @@ const initialState = {
   error: null,
   duplicateUsername: false,
   duplicateEmail: false,
+  submitSucceed: false,
 };
 
 describe('registerSlice reducers', () => {

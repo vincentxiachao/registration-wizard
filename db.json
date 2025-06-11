@@ -1,5 +1,5 @@
 {
-    "checkDuplicateUsername": [
+  "checkDuplicateUsername": [
     {
       "username": "admin",
       "id": "bfed"
@@ -13,5 +13,7 @@
     {
       "email": "vincentxia0625@163.com",
       "id": "bfed"
-    }]
+    }
+  ],
+  "registerNewUser": []
 }

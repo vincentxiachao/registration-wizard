@@ -120,7 +120,7 @@ function GenderSelect() {
 }
 function ProfilePicture() {
   const dispatch = useDispatch<AppDispatch>();
-  const vatar = useSelector(selectedAvatar);
+  const avatar = useSelector(selectedAvatar);
   useEffect(() => {
     try {
       const cachedAvatar = localStorage.getItem('avatarMetadata');
@@ -129,7 +129,7 @@ function ProfilePicture() {
         dispatch(fillAvatar(avatarData));
       }
     } catch (error) {
-      console.error('fail to restall avatar:', error);
+      console.error('fail to restore avatar:', error);
     }
   }, []);
   const render = useCallback(() => {
@@ -138,7 +138,8 @@ function ProfilePicture() {
         <UploadAvatars onUpload={handleUpload} />
       </div>
     );
-  }, [vatar]);
+  }, [avatar]);
+
   const handleUpload = (file: File) => {
     dispatch(
       fillAvatar({

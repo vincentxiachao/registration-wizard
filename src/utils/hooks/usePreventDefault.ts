@@ -6,7 +6,9 @@ export const usePreventDefault = <E extends React.SyntheticEvent>(
     (e: E) => {
       e.preventDefault();
       e.stopPropagation();
-      handler && handler(e);
+      if (handler) {
+        handler(e);
+      }
     },
     [handler]
   );

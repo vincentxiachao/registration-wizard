@@ -14,13 +14,12 @@ export const registerNewUser = createAsyncThunk(
         ...stateBody,
       };
       const response = await post('registerNewUser', submitBody);
-
-      const token = response.data.token;
       console.log(response);
       console.log('submission succeed!');
+      localStorage.clear();
       localStorage.setItem('avatar', '');
-      localStorage.setItem('access_token', token);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -38,25 +37,27 @@ export const checkDuplicateEmail = createAsyncThunk(
     });
   }
 );
+const initialState = {
+  registerInfo: {
+    email: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: daysjs().format('1988-06-25'),
+    country: '',
+    gender: null,
+    avatar: null,
+  },
+  password: '',
+  confirmPassword: '',
+  isLoggedIn: false,
+  error: null,
+  duplicateUsername: false,
+  duplicateEmail: false,
+  submitSucceed: false,
+};
 const registerSlice = createSlice({
   name: 'registerSlice',
-  initialState: {
-    registerInfo: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: daysjs().format('1988-06-25'),
-      country: '',
-      gender: null,
-      avatar: null,
-    },
-    password: '',
-    confirmPassword: '',
-    isLoggedIn: false,
-    error: null,
-    duplicateUsername: false,
-    duplicateEmail: false,
-  },
+  initialState: initialState,
   reducers: {
     fillBasicInfo: (state, action) => {
       state.registerInfo.email = action.payload.email;
@@ -109,9 +110,14 @@ const registerSlice = createSlice({
       state = action.payload;
       return state;
     },
+    resetState: (state) => {
+      state = initialState;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerNewUser.fulfilled, (state) => {
+      state.submitSucceed = true;
       return state;
     });
 
@@ -138,6 +144,7 @@ export const {
   fillDateOfBirth,
   cacheState,
   restoreState,
+  resetState,
 } = registerSlice.actions;
 //selectors
 export const selectRegisterState = (state: registerState) =>
@@ -163,6 +170,9 @@ export const selectCountry = (state: registerState) => {
 };
 export const selectEmail = (state: registerState) => {
   return state.registerAccount.registerInfo.email;
+};
+export const selectSubmitSuccess = (state: registerState) => {
+  return state.registerAccount.submitSucceed;
 };
 export const selectIsDateOfBirthValid = (state: registerState) => {
   const { dateOfBirth } = state.registerAccount.registerInfo;
@@ -247,5 +257,6 @@ type registerState = {
     error: null;
     duplicateEmail: boolean;
     duplicateUsername: boolean;
+    submitSucceed: boolean;
   };
 };

@@ -48,5 +48,8 @@
     "invalidDate": "无效的日期",
     "selectGender_0": "男",
     "selectGender_1": "女",
-    "selectGender_2": "我选择不透露"
+    "selectGender_2": "我选择不透露",
+
+    "submissionSuccess": "提交成功",
+    "submissionFailed": "提交失败"
 }

@@ -5,6 +5,11 @@ import path from 'path';
 // import { federation } from '@module-federation/vite';
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    watch: {
+      ignored: ['**/db.json'],
+    },
+  },
   // plugins: [
   //   react(),
   //   tailwindcss(),

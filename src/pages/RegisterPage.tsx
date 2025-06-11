@@ -12,10 +12,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   cacheState,
   registerNewUser,
+  resetState,
   restoreState,
   selectIsAccountInfoValid,
   selectIsBasicInfoFilled,
   selectIsDetailsFilled,
+  selectSubmitSuccess,
 } from '@features/account/registerSlice';
 import { RegisterBasicInfo } from '@features/account/components/RegisterBasicInfo';
 import { RegisterConfirm } from '@features/account/components/RegisterConfirm';
@@ -32,6 +34,7 @@ export default function RegisterPage() {
   const isBasicInfoFilled = useSelector(selectIsBasicInfoFilled);
   const isDetailsFilled = useSelector(selectIsDetailsFilled);
   const isAccountInfoValid = useSelector(selectIsAccountInfoValid);
+  const submissionDone = useSelector(selectSubmitSuccess);
   const [disableNext, setDisableNext] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
@@ -49,6 +52,7 @@ export default function RegisterPage() {
     }
     return () => {
       localStorage.setItem('avatar', '');
+      dispatch(resetState());
     };
   }, []);
   useEffect(() => {
@@ -63,6 +67,11 @@ export default function RegisterPage() {
       setDisableNext(true);
     }
   }, [isBasicInfoFilled, isDetailsFilled, isAccountInfoValid, activeStep]);
+  useEffect(() => {
+    if (submissionDone) {
+      setShowSnackbar(true);
+    }
+  }, [submissionDone]);
   const handleNext = () => {
     dispatch(cacheState());
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -132,14 +141,18 @@ export default function RegisterPage() {
             </Stepper>
             <Box className='flex justify-end !mt-2 flex-0'>
               {activeStep > 0 && (
-                <Button onClick={handleBack} sx={{ mr: 1 }}>
+                <Button
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                  disabled={submissionDone}
+                >
                   {t('previous')}
                 </Button>
               )}
               <Button
                 variant='contained'
                 onClick={activeStep === 3 ? handleSubmit : handleNext}
-                disabled={disableNext}
+                disabled={disableNext || submissionDone}
               >
                 {activeStep === steps.length - 1
                   ? `${t('submit')}`
@@ -151,7 +164,7 @@ export default function RegisterPage() {
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={showSnackbar}
-          message={`${t('failToRegister')}`}
+          message={`${t('submissionSuccess')}`}
           key={'bottomright'}
           onClose={() => setShowSnackbar(false)}
         />

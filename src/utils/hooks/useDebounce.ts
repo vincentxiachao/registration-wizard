@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
-export const useDebounce = (cb: (args?: any) => void, delay: number = 500) => {
+export const useDebounce = <T>(cb: (args?: T) => void, delay: number = 500) => {
   const timerRef = useRef<number | null>(null);
-  const debounceCb = (...args: any) => {
+  const debounceCb = <U extends T>(...args: U[]) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }

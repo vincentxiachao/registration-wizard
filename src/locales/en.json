@@ -48,5 +48,7 @@
     "i prefer not to say": "I prefer not to say",
     "selectGender_0": "Male",
     "selectGender_1": "Female",
-    "selectGender_2": "I prefer not to say"
+    "selectGender_2": "I prefer not to say",
+    "submissionSuccess": "Submission Successful",
+    "submissionFailed": "Submission Failed"
   }
