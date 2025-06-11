@@ -10,7 +10,7 @@ export const store = configureStore({
 });
 export type AppStore = ReturnType<typeof setupStore>;
 const rootReducer = {
-  account: registerReducer,
+  registerAccount: registerReducer,
 };
 //for UT mock store
 export const setupStore = (preloadedState = {}) => {
