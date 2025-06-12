@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -12,6 +12,27 @@ import { store as rootStore } from './store';
 import RegisterPage from './pages/RegisterPage';
 import { Provider } from 'react-redux';
 import { redirect } from 'react-router-dom';
+
+const LazyBasicInfo = lazy(() =>
+  import('@features/account/components/RegisterBasicInfo').then(
+    ({ RegisterBasicInfo }) => ({ default: RegisterBasicInfo })
+  )
+);
+const LazyDetails = lazy(() =>
+  import('@features/account/components/RegisterDetails').then(
+    ({ RegisterDetails }) => ({ default: RegisterDetails })
+  )
+);
+const LazyAccount = lazy(() =>
+  import('@features/account/components/RegisterAccount').then(
+    ({ RegisterAccount }) => ({ default: RegisterAccount })
+  )
+);
+const LazyConfirm = lazy(() =>
+  import('@features/account/components/RegisterConfirm').then(
+    ({ RegisterConfirm }) => ({ default: RegisterConfirm })
+  )
+);
 
 const router = createBrowserRouter([
   {
@@ -27,6 +48,41 @@ const router = createBrowserRouter([
           {
             path: 'register',
             Component: RegisterPage,
+            children: [
+              {
+                index: true,
+                path: 'basic-info',
+                element: (
+                  <Suspense fallback={<div>loading...</div>}>
+                    <LazyBasicInfo />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'details',
+                element: (
+                  <Suspense fallback={<div>loading...</div>}>
+                    <LazyDetails />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'account',
+                element: (
+                  <Suspense fallback={<div>loading...</div>}>
+                    <LazyAccount />
+                  </Suspense>
+                ),
+              },
+              {
+                path: 'confirm',
+                element: (
+                  <Suspense fallback={<div>loading...</div>}>
+                    <LazyConfirm />
+                  </Suspense>
+                ),
+              },
+            ],
           },
           { path: '', loader: () => redirect('/home') },
         ],

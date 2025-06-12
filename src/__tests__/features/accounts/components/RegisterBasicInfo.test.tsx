@@ -5,16 +5,6 @@ import { fireEvent, screen } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 describe('RegisterBasicInfo', () => {
-  beforeAll(() => {
-    // vi.mock('react-i18next', () => ({
-    //   useTranslation: vi.fn().mockImplementation(() => {
-    //     return {
-    //       t: vi.fn().mockImplementation((input) => input),
-    //       i18n: { language: 'en' },
-    //     };
-    //   }),
-    // }));
-  });
   beforeEach(() => {});
   afterAll(() => {
     vi.clearAllMocks();
@@ -29,6 +19,7 @@ describe('RegisterBasicInfo', () => {
         <RegisterBasicInfo />
       </I18nextProvider>
     );
+    console.log(store.getState());
     const firstNameInput = screen
       .getByTestId('register-basic-first-name-input')
       .querySelector('input');

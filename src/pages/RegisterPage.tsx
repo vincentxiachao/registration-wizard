@@ -19,14 +19,11 @@ import {
   selectIsDetailsFilled,
   selectSubmitSuccess,
 } from '@features/account/registerSlice';
-import { RegisterBasicInfo } from '@features/account/components/RegisterBasicInfo';
-import { RegisterConfirm } from '@features/account/components/RegisterConfirm';
 
 import type { AppDispatch } from '../store';
-import { RegisterDetails } from '@features/account/components/RegisterDetails';
-import { RegisterAccount } from '@features/account/components/RegisterAccount';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '@utils/hooks/useDebounce';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 export default function RegisterPage() {
   const { t } = useTranslation();
@@ -38,6 +35,7 @@ export default function RegisterPage() {
   const [disableNext, setDisableNext] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -73,8 +71,18 @@ export default function RegisterPage() {
       setShowSnackbar(true);
     }
   }, [submissionDone]);
+  const stepperToUrlMap = new Map([
+    [0, 'basic-info'],
+    [1, 'details'],
+    [2, 'account'],
+    [3, 'confirm'],
+  ]);
+  useEffect(() => {
+    navigate(`/register/${stepperToUrlMap.get(activeStep)}`);
+  }, [activeStep]);
   const handleNext = () => {
     dispatch(cacheState());
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
   const steps = [
@@ -107,21 +115,6 @@ export default function RegisterPage() {
     }
   };
 
-  const getStepContent = (step: number) => {
-    switch (step) {
-      case 0:
-        return <RegisterBasicInfo />;
-      case 1:
-        return <RegisterDetails />;
-      case 2:
-        return <RegisterAccount />;
-      case 3:
-        return <RegisterConfirm />;
-      default:
-        return '未知步骤';
-    }
-  };
-
   return (
     <main className='flex h-8/12 flex-col'>
       <Typography variant='h2' className='mb-4 flex items-end justify-between'>
@@ -132,7 +125,8 @@ export default function RegisterPage() {
           <Typography>Register Successfully!</Typography>
         ) : (
           <>
-            {getStepContent(activeStep)}
+            <Outlet></Outlet>
+            {/* {getStepContent(activeStep)} */}
             <Stepper activeStep={activeStep}>
               {steps.map((label) => (
                 <Step key={label}>
