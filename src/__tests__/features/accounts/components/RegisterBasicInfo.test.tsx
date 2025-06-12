@@ -1,27 +1,64 @@
 import { RegisterBasicInfo } from '@features/account/components/RegisterBasicInfo';
 import { afterAll, vi } from 'vitest';
-import { renderWithProviders } from '../test-utils';
+import { RenderWithProviders } from '../../../providerWrappers/RenderWithProviders';
 import { fireEvent, screen } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
+import i18next from 'i18next';
 describe('RegisterBasicInfo', () => {
+  beforeAll(() => {
+    // vi.mock('react-i18next', () => ({
+    //   useTranslation: vi.fn().mockImplementation(() => {
+    //     return {
+    //       t: vi.fn().mockImplementation((input) => input),
+    //       i18n: { language: 'en' },
+    //     };
+    //   }),
+    // }));
+  });
+  beforeEach(() => {});
   afterAll(() => {
     vi.clearAllMocks();
   });
   afterEach(async () => {
     await localStorage.clear();
   });
-  it('should get data from localStorage and update dispatch an event', async () => {
-    const { store } = renderWithProviders(<RegisterBasicInfo />);
-    const dispatchSpy = vi.spyOn(store, 'dispatch');
-    console.log(screen);
-    const firsNameInput = screen.getByRole('textbox', { name: 'firstName' });
-    expect(firsNameInput).toBeInTheDocument();
-    await fireEvent.change(firsNameInput, {
-      target: { value: 'test first name' },
-    });
+
+  it('should update state when first name input change', () => {
+    const { store } = RenderWithProviders(
+      <I18nextProvider i18n={i18next}>
+        <RegisterBasicInfo />
+      </I18nextProvider>
+    );
+    const firstNameInput = screen
+      .getByTestId('register-basic-first-name-input')
+      .querySelector('input');
+    expect(firstNameInput).toBeInTheDocument();
+    if (firstNameInput) {
+      fireEvent.change(firstNameInput, {
+        target: { value: 'test first name' },
+      });
+    }
     expect(store.getState().registerAccount.registerInfo.firstName).toBe(
       'test first name'
     );
-    // expect(store).toBeDefined();
-    // expect(dispatchSpy).toHaveBeenCalled();
+  });
+  it('should update state when last name input change', () => {
+    const { store } = RenderWithProviders(
+      <I18nextProvider i18n={i18next}>
+        <RegisterBasicInfo />
+      </I18nextProvider>
+    );
+    const lastNameInput = screen
+      .getByTestId('register-basic-last-name-input')
+      .querySelector('input');
+    expect(lastNameInput).toBeInTheDocument();
+    if (lastNameInput) {
+      fireEvent.change(lastNameInput, {
+        target: { value: 'test last name' },
+      });
+    }
+    expect(store.getState().registerAccount.registerInfo.lastName).toBe(
+      'test last name'
+    );
   });
 });

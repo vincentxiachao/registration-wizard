@@ -16,10 +16,10 @@ i18n
         translation: zhTranslations,
       },
     },
-    lng: 'zh-CN',
-    fallbackLng: 'zh-CN',
+    lng: 'en',
+    fallbackLng: 'en',
     interpolation: {
-      escapeValue: false,
+      escapeValue: true,
     },
   });
 

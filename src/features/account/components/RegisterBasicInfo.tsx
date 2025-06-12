@@ -63,6 +63,7 @@ export const RegisterBasicInfo = () => {
             margin='normal'
             variant='standard'
             required
+            data-testid='register-basic-first-name-input'
             error={firstName === '' && firstNameTouched}
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
           />
@@ -75,6 +76,7 @@ export const RegisterBasicInfo = () => {
             onChange={(e) => onLastNameChanged(e.target.value)}
             margin='normal'
             variant='standard'
+            data-testid='register-basic-last-name-input'
             required
             error={lastName === '' && lastNameTouched}
             helperText={isDuplicateUsername ? t('duplicateUsername') : ''}

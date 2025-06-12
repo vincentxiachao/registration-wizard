@@ -108,6 +108,7 @@ const registerSlice = createSlice({
     },
     restoreState: (state, action) => {
       state = action.payload;
+      console.log('in restore action');
       return state;
     },
     resetState: (state) => {
@@ -193,7 +194,6 @@ export const selectAccountFilled = (state: RootState) => {
   return false;
 };
 export const selectIsBasicInfoFilled = (state: RootState) => {
-  console.log(state);
   const { dateOfBirth, firstName, lastName } =
     state.registerAccount.registerInfo;
   const invalid =
