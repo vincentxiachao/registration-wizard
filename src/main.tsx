@@ -59,6 +59,14 @@ const router = createBrowserRouter([
                 ),
               },
               {
+                index: true,
+                element: (
+                  <Suspense fallback={<div>loading...</div>}>
+                    <LazyBasicInfo />
+                  </Suspense>
+                ),
+              },
+              {
                 path: 'details',
                 element: (
                   <Suspense fallback={<div>loading...</div>}>

@@ -69,6 +69,9 @@ export default function RegisterPage() {
   useEffect(() => {
     if (submissionDone) {
       setShowSnackbar(true);
+      setTimeout(() => {
+        navigate('/home');
+      }, 3000);
     }
   }, [submissionDone]);
   const stepperToUrlMap = new Map([

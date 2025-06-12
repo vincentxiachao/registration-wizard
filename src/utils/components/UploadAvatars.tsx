@@ -1,22 +1,20 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
+import { useEffect, useState, type ChangeEvent } from 'react';
 
 export default function UploadAvatars({
   onUpload,
 }: {
   onUpload: (file: File) => void;
 }) {
-  const [avatarSrc, setAvatarSrc] = React.useState<string | undefined>(
-    undefined
-  );
-  React.useEffect(() => {
+  const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
+  useEffect(() => {
     const avatarUrl = localStorage.getItem('avatar');
     if (avatarUrl) {
       setAvatarSrc(avatarUrl);
     }
   }, []);
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       localStorage.removeItem('avatar');
