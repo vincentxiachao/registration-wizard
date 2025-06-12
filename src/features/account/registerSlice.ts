@@ -37,7 +37,7 @@ export const checkDuplicateEmail = createAsyncThunk(
     });
   }
 );
-const initialState: registerState = {
+const initialState: RegisterState = {
   registerInfo: {
     email: '',
     firstName: '',
@@ -193,6 +193,7 @@ export const selectAccountFilled = (state: RootState) => {
   return false;
 };
 export const selectIsBasicInfoFilled = (state: RootState) => {
+  console.log(state);
   const { dateOfBirth, firstName, lastName } =
     state.registerAccount.registerInfo;
   const invalid =
@@ -233,7 +234,7 @@ function validateEmail(email: string) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
 }
-type registerState = {
+export type RegisterState = {
   registerInfo: {
     email: string;
     firstName: string;

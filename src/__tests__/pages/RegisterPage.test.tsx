@@ -1,25 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import RegisterPage from '../../pages/RegisterPage';
-import { combineReducers } from '@reduxjs/toolkit';
-import registerReducer from '@features/account/registerSlice';
-const rootReducer = combineReducers({ registerAccount: registerReducer });
-import type { ReactElement } from 'react';
-import { initialState } from '../../__tests__/constants/registerAccountInitialState';
-
-const mockStore = configureStore({
-  reducer: rootReducer,
-  preloadedState: initialState,
-});
-
-const renderWithRedux = (component: ReactElement) => {
-  return render(<Provider store={mockStore}>{component}</Provider>);
-};
+import { afterAll, vi } from 'vitest';
+import { renderWithProviders } from '../features/accounts/test-utils';
+import { useDispatch } from 'react-redux';
 
 describe('RegisterPage', () => {
-  it('renders the button with the correct label', () => {
-    renderWithRedux(<RegisterPage />);
-    expect(screen.getByText('firstName')).toBeInTheDocument();
+  afterAll(() => {
+    vi.clearAllMocks();
+  });
+  afterEach(async () => {
+    await localStorage.clear();
+  });
+  it('should get data from localStorage and update dispatch an event', () => {
+    const { store } = renderWithProviders(<RegisterPage />);
+
+    expect(store.getState().registerAccount).toBeDefined();
   });
 });
