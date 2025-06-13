@@ -149,6 +149,7 @@ export default function RegisterPage() {
               )}
               <Button
                 variant='contained'
+                data-testid='register-page-next-submit-button'
                 onClick={activeStep === 3 ? handleSubmit : handleNext}
                 disabled={disableNext || submissionDone}
               >

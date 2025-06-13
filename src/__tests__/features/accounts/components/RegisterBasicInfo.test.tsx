@@ -19,7 +19,6 @@ describe('RegisterBasicInfo', () => {
         <RegisterBasicInfo />
       </I18nextProvider>
     );
-    console.log(store.getState());
     const firstNameInput = screen
       .getByTestId('register-basic-first-name-input')
       .querySelector('input');
