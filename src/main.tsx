@@ -1,7 +1,7 @@
 import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './app/App';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
@@ -14,22 +14,22 @@ import { Provider } from 'react-redux';
 import { redirect } from 'react-router-dom';
 
 const LazyBasicInfo = lazy(() =>
-  import('@features/account/components/RegisterBasicInfo').then(
+  import('@features/register/components/RegisterBasicInfo').then(
     ({ RegisterBasicInfo }) => ({ default: RegisterBasicInfo })
   )
 );
 const LazyDetails = lazy(() =>
-  import('@features/account/components/RegisterDetails').then(
+  import('@features/register/components/RegisterDetails').then(
     ({ RegisterDetails }) => ({ default: RegisterDetails })
   )
 );
 const LazyAccount = lazy(() =>
-  import('@features/account/components/RegisterAccount').then(
+  import('@features/register/components/RegisterAccount').then(
     ({ RegisterAccount }) => ({ default: RegisterAccount })
   )
 );
 const LazyConfirm = lazy(() =>
-  import('@features/account/components/RegisterConfirm').then(
+  import('@features/register/components/RegisterConfirm').then(
     ({ RegisterConfirm }) => ({ default: RegisterConfirm })
   )
 );

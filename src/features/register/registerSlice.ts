@@ -56,43 +56,62 @@ const initialState: RegisterState = {
   submitSucceed: false,
 };
 const registerSlice = createSlice({
-  name: 'registerSlice',
+  name: 'registerAccount',
   initialState: initialState,
   reducers: {
     fillBasicInfo: (state, action) => {
-      state.registerInfo.email = action.payload.email;
-      state.registerInfo.firstName = action.payload.firstName;
-      state.registerInfo.lastName = action.payload.lastName;
-      state.registerInfo.dateOfBirth = action.payload.dateOfBirth;
-      return state;
+      switch (action.payload.type) {
+        case 'EDIT_FIRST_NAME': {
+          state.registerInfo.firstName = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_LAST_NAME': {
+          state.registerInfo.lastName = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_EMAIL': {
+          state.registerInfo.email = action.payload.newValue;
+          return state;
+        }
+        default:
+          return state;
+      }
     },
-    fillFirstName: (state, action) => {
-      state.registerInfo.firstName = action.payload;
-      return state;
+    fillDetails: (state, action) => {
+      switch (action.payload.type) {
+        case 'EDIT_COUNTRY': {
+          state.registerInfo.country = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_GENDER': {
+          state.registerInfo.gender = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_AVATAR': {
+          state.registerInfo.avatar = action.payload.newValue;
+          return state;
+        }
+        default:
+          return state;
+      }
     },
-    fillLastName: (state, action) => {
-      state.registerInfo.lastName = action.payload;
-      return state;
-    },
-    fillDateOfBirth: (state, action) => {
-      state.registerInfo.dateOfBirth = action.payload;
-      return state;
-    },
-    fillPassword: (state, action) => {
-      state.password = action.payload;
-      return state;
-    },
-    fillConfirmPassword: (state, action) => {
-      state.confirmPassword = action.payload;
-      return state;
-    },
-    fillCountry: (state, action) => {
-      state.registerInfo.country = action.payload;
-      return state;
-    },
-    fillGender: (state, action) => {
-      state.registerInfo.gender = action.payload;
-      return state;
+    fillAccount: (state, action) => {
+      switch (action.payload.type) {
+        case 'EDIT_EMAIL': {
+          state.registerInfo.email = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_PASSWORD': {
+          state.password = action.payload.newValue;
+          return state;
+        }
+        case 'EDIT_CONFIRM_PASSWORD': {
+          state.confirmPassword = action.payload.newValue;
+          return state;
+        }
+        default:
+          return state;
+      }
     },
     fillEmail: (state, action) => {
       state.registerInfo.email = action.payload;
@@ -108,11 +127,11 @@ const registerSlice = createSlice({
     },
     restoreState: (state, action) => {
       state = action.payload;
-      console.log('in restore action');
       return state;
     },
     resetState: (state) => {
-      state = initialState;
+      state = { ...initialState };
+
       return state;
     },
   },
@@ -133,16 +152,10 @@ const registerSlice = createSlice({
 export default registerSlice.reducer;
 //actions
 export const {
-  fillFirstName,
-  fillLastName,
   fillBasicInfo,
-  fillPassword,
-  fillConfirmPassword,
-  fillCountry,
-  fillGender,
-  fillEmail,
+  fillDetails,
+  fillAccount,
   fillAvatar,
-  fillDateOfBirth,
   cacheState,
   restoreState,
   resetState,
@@ -162,7 +175,7 @@ export const selectConfirmPassword = (state: RootState) =>
 export const selectDateOfBirth = (state: RootState) => {
   return state.registerAccount.registerInfo.dateOfBirth;
 };
-export const seletGender = (state: RootState) => {
+export const selectGender = (state: RootState) => {
   return state.registerAccount.registerInfo.gender;
 };
 export const selectCountry = (state: RootState) => {

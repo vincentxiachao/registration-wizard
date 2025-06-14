@@ -5,9 +5,9 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import AppRegistrationOutlined from '@mui/icons-material/AppRegistrationOutlined';
 import { type Navigation } from '@toolpad/core';
 import { ReactRouterAppProvider } from '@toolpad/core/react-router';
-import i18n from './i18n';
+import i18n from '../i18n';
 import { useTranslation } from 'react-i18next';
-
+import { ErrorBoundary } from 'react-error-boundary';
 function App() {
   const { t } = useTranslation();
   const location = useLocation();
@@ -31,14 +31,22 @@ function App() {
   ];
 
   const branding = {
-    logo: <img src='./public/vite.svg' alt='Registration Wizard' />,
+    logo: (
+      <img
+        src='./public/vite.svg'
+        className='self-end w-5 h-5'
+        alt='Registration Wizard'
+      />
+    ),
     title: `${t('appName')}`,
     homeUrl: '/home',
   };
   return (
-    <ReactRouterAppProvider navigation={sideNav} branding={branding}>
-      <Outlet />
-    </ReactRouterAppProvider>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <ReactRouterAppProvider navigation={sideNav} branding={branding}>
+        <Outlet />
+      </ReactRouterAppProvider>
+    </ErrorBoundary>
   );
 }
 

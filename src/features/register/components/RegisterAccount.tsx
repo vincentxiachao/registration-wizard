@@ -3,15 +3,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fillPassword,
-  fillConfirmPassword,
   selectPassword,
   selectConfirmPassword,
   selectEmail,
-  fillEmail,
   checkDuplicateEmail,
   selectDuplicateEmail,
   selectInvalidEmail,
+  fillAccount,
 } from '../registerSlice';
 import type { AppDispatch } from '../../../store';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -30,9 +28,7 @@ export const RegisterAccount = () => {
   const [passwordVisible, setPasswordVisible] = useState(false); // State to track password visibility
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // State to track password visibility
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false); // State to track password visibility
-  const handleFillPassword = (password: string) => {
-    dispatch(fillPassword(password));
-  };
+
   useEffect(() => {
     setInvalidPassword(!!password && password.length < 8);
     setNotMatch(password !== confirmPassword);
@@ -42,16 +38,23 @@ export const RegisterAccount = () => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(dispatch(fillEmail(e.target.value)));
+    dispatch(
+      dispatch(fillAccount({ newValue: e.target.value, type: 'EDIT_EMAIL' }))
+    );
   };
   const invalidEmail = useSelector(selectInvalidEmail);
+
   const onEmailBlur = () => {
     setEmailTouched(true);
     dispatch(checkDuplicateEmail());
   };
-
+  const handleFillPassword = (password: string) => {
+    dispatch(fillAccount({ newValue: password, type: 'EDIT_PASSWORD' }));
+  };
   const handleFillConfirmPassword = (confirmPassword: string) => {
-    dispatch(fillConfirmPassword(confirmPassword));
+    dispatch(
+      fillAccount({ newValue: confirmPassword, type: 'EDIT_CONFIRM_PASSWORD' })
+    );
   };
 
   return (

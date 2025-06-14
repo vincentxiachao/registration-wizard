@@ -1,4 +1,4 @@
-import { RegisterBasicInfo } from '@features/account/components/RegisterBasicInfo';
+import { RegisterBasicInfo } from '@features/register/components/RegisterBasicInfo';
 import { afterAll, vi } from 'vitest';
 import { RenderWithProviders } from '../../../providerWrappers/RenderWithProviders';
 import { fireEvent, screen } from '@testing-library/react';

@@ -18,7 +18,7 @@ import {
   selectIsBasicInfoFilled,
   selectIsDetailsFilled,
   selectSubmitSuccess,
-} from '@features/account/registerSlice';
+} from '@features/register/registerSlice';
 
 import type { AppDispatch } from '../store';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,7 @@ export default function RegisterPage() {
     try {
       const cache = localStorage.getItem('registerAccount');
       if (cache) {
-        const cachedState = JSON.parse(cache ? cache : '');
+        const cachedState = JSON.parse(cache);
         dispatch(restoreState(cachedState));
       }
     } catch (error) {
@@ -53,7 +53,7 @@ export default function RegisterPage() {
       localStorage.setItem('avatar', '');
       dispatch(resetState());
     };
-  }, []);
+  }, [dispatch, navigate]);
   useEffect(() => {
     if (
       (isBasicInfoFilled && activeStep === 0) ||

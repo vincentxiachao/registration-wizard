@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { type AppStore, type RootState } from '../../store';
-import registerReducer from '../../features/account/registerSlice';
+import registerReducer from '../../features/register/registerSlice';
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: RootState;
   store?: AppStore;
@@ -11,6 +11,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import i18next from '../../i18n';
 import { I18nextProvider } from 'react-i18next';
+import { initialState } from './initialState';
 const rootReducer = combineReducers({
   registerAccount: registerReducer,
 });
@@ -24,7 +25,11 @@ const setupStore = (preloadedState?: Partial<RootState>) => {
 
 export function RenderWithProviders(
   ui: React.ReactElement,
-  { store = setupStore(), ...renderOptions }: ExtendedRenderOptions = {}
+  {
+    preloadedState = initialState,
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({
     children,

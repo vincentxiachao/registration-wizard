@@ -4,13 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { ICountryType } from '@utils/interfaces/countryType';
 import { countries } from '@utils/constants/countries';
 import type { AppDispatch } from 'src/store';
-import {
-  fillAvatar,
-  fillCountry,
-  fillGender,
-  selectCountry,
-  seletGender,
-} from '../registerSlice';
+import { fillDetails, selectCountry, selectGender } from '../registerSlice';
 import { useCallback, useEffect, useState } from 'react';
 import UploadAvatars from '@utils/components/UploadAvatars';
 import { selectedAvatar } from '../registerSlice';
@@ -30,7 +24,7 @@ export const RegisterDetails = () => {
 function CountrySelect() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  const [blured, setBlured] = useState(false);
+  const [blurred, setBlurred] = useState(false);
   const selectedCountry = useSelector(selectCountry);
   const onCountryChange = (
     e: React.SyntheticEvent,
@@ -38,7 +32,9 @@ function CountrySelect() {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(fillCountry(newVal ? newVal : null));
+    dispatch(
+      fillDetails({ newValue: newVal ? newVal : null, type: 'EDIT_COUNTRY' })
+    );
   };
 
   return (
@@ -55,10 +51,10 @@ function CountrySelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          error={blured && selectedCountry === null}
+          error={blurred && selectedCountry === null}
           required
           label={t('selectCountry')}
-          onBlur={() => setBlured(true)}
+          onBlur={() => setBlurred(true)}
         />
       )}
     />
@@ -73,14 +69,14 @@ function GenderSelect() {
     e.preventDefault();
     e.stopPropagation();
     if (newVal) {
-      dispatch(fillGender(newVal));
+      dispatch(fillDetails({ newValue: newVal, type: 'EDIT_GENDER' }));
     } else {
-      dispatch(fillGender(null));
+      dispatch(fillDetails({ newValue: null, type: 'EDIT_GENDER' }));
     }
   };
   const { t } = useTranslation();
-  const [blured, setBlured] = useState(false);
-  const selectorGender = useSelector(seletGender);
+  const [blurred, setBlurred] = useState(false);
+  const selectorGender = useSelector(selectGender);
   const options = [
     { label: t('male'), id: 0 },
     { label: t('female'), id: 1 },
@@ -102,15 +98,15 @@ function GenderSelect() {
         renderInput={(params) => (
           <TextField
             {...params}
-            error={blured && selectorGender === null}
+            error={blurred && selectorGender === null}
             required
             value={selectorGender}
             helperText={
-              blured && selectorGender === null ? t('genderIsRequired') : ''
+              blurred && selectorGender === null ? t('genderIsRequired') : ''
             }
             label={t('chooseGender')}
             onBlur={() => {
-              setBlured(true);
+              setBlurred(true);
             }}
           />
         )}
@@ -126,12 +122,44 @@ function ProfilePicture() {
       const cachedAvatar = localStorage.getItem('avatarMetadata');
       if (cachedAvatar) {
         const avatarData = JSON.parse(cachedAvatar);
-        dispatch(fillAvatar(avatarData));
+        dispatch(fillDetails({ newValue: avatarData, type: 'EDIT_AVATAR' }));
       }
     } catch (error) {
       console.error('fail to restore avatar:', error);
     }
-  }, []);
+  }, [dispatch]);
+  const handleUpload = useCallback(
+    (file: File) => {
+      dispatch(
+        fillDetails({
+          newValue: {
+            id: `${Date.now()}`,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            lastModified: file.lastModified,
+          },
+          type: 'EDIT_AVATAR',
+        })
+      );
+
+      const avatarData = {
+        id: `${Date.now()}`,
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        lastModified: file.lastModified,
+      };
+
+      dispatch(fillDetails({ newValue: avatarData, type: 'EDIT_AVATAR' }));
+      try {
+        localStorage.setItem('avatarMetadata', JSON.stringify(avatarData));
+      } catch (error) {
+        console.error('fail to cache:', error);
+      }
+    },
+    [dispatch]
+  );
   const render = useCallback(() => {
     return (
       <div className='self-center'>
@@ -140,32 +168,5 @@ function ProfilePicture() {
     );
   }, [avatar]);
 
-  const handleUpload = (file: File) => {
-    dispatch(
-      fillAvatar({
-        id: `${Date.now()}`,
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        lastModified: file.lastModified,
-      })
-    );
-
-    const avatarData = {
-      id: `${Date.now()}`,
-      name: file.name,
-      type: file.type,
-      size: file.size,
-      lastModified: file.lastModified,
-    };
-
-    dispatch(fillAvatar(avatarData));
-
-    try {
-      localStorage.setItem('avatarMetadata', JSON.stringify(avatarData));
-    } catch (error) {
-      console.error('fail to cache:', error);
-    }
-  };
   return render();
 }

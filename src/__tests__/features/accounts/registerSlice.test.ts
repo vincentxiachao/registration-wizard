@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { type RegisterState } from '@features/account/registerSlice';
+import {
+  fillAccount,
+  fillBasicInfo,
+  type RegisterState,
+} from '@features/register/registerSlice';
 import registerReducer, {
-  fillPassword,
-  fillConfirmPassword,
-  fillEmail,
   selectIsPasswordValid,
   selectEmail,
-} from '@features/account/registerSlice';
+} from '@features/register/registerSlice';
 
 // 初始化状态
 const initialState: RegisterState = {
@@ -32,21 +33,33 @@ const initialState: RegisterState = {
 describe('Register Slice Actions', () => {
   it('should update the password', () => {
     const newPassword = 'newPassword123';
-    const newState = registerReducer(initialState, fillPassword(newPassword));
+    const newState = registerReducer(
+      initialState,
+      fillAccount({ newValue: newPassword, type: 'EDIT_PASSWORD' })
+    );
     expect(newState.password).toBe(newPassword);
   });
   it('should update the confirm password', () => {
     const newConfirmPassword = 'newPassword123';
     const newState = registerReducer(
       initialState,
-      fillConfirmPassword(newConfirmPassword)
+      fillAccount({
+        newValue: newConfirmPassword,
+        type: 'EDIT_CONFIRM_PASSWORD',
+      })
     );
     expect(newState.confirmPassword).toBe(newConfirmPassword);
   });
 
   it('should update the email', () => {
     const newEmail = 'test@example.com';
-    const newState = registerReducer(initialState, fillEmail(newEmail));
+    const newState = registerReducer(
+      initialState,
+      fillBasicInfo({
+        type: 'EDIT_EMAIL',
+        newValue: newEmail,
+      })
+    );
     expect(newState.registerInfo.email).toBe(newEmail);
   });
 });

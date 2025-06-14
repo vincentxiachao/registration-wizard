@@ -4,14 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../../../store';
 import {
-  fillFirstName,
-  fillLastName,
   selectDateOfBirth,
   selectDuplicateUsername,
   selectFirstName,
   selectLastName,
-  fillDateOfBirth,
   selectIsDateOfBirthValid,
+  fillBasicInfo,
 } from '../registerSlice';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -38,13 +36,18 @@ export const RegisterBasicInfo = () => {
     setLastNameTouched(true);
   };
   const onFirstNameChanged = (newVal: string) => {
-    dispatch(fillFirstName(newVal));
+    dispatch(fillBasicInfo({ newValue: newVal, type: 'EDIT_FIRST_NAME' }));
   };
   const onLastNameChanged = (newVal: string) => {
-    dispatch(fillLastName(newVal));
+    dispatch(fillBasicInfo({ newValue: newVal, type: 'EDIT_LAST_NAME' }));
   };
   const onDateOfBirthChanged = (newVal: PickerValue) => {
-    dispatch(fillDateOfBirth(newVal?.format('YYYY-MM-DD')));
+    dispatch(
+      fillBasicInfo({
+        newValue: newVal?.format('YYYY-MM-DD'),
+        type: 'EDIT_DATE_OF_BIRTH',
+      })
+    );
   };
 
   const lang = useTranslation().i18n.language;
