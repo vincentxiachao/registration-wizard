@@ -6,6 +6,7 @@ import path from 'path';
 import viteCompression from 'vite-plugin-compression';
 // import { federation } from '@module-federation/vite';
 export default defineConfig({
+  base: '/',
   plugins: [
     react(),
     tailwindcss(),

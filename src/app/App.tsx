@@ -34,7 +34,7 @@ function App() {
     logo: (
       <img
         src='./public/vite.svg'
-        className='self-end w-5 h-5'
+        className='w-5 h-5'
         alt='Registration Wizard'
       />
     ),

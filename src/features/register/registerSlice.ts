@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { get, post } from '../../utils/apiInterceptor';
+import { get, post } from '../../utils/apiClientWithInterceptors';
 import { type RootState } from '../../store';
 import daysjs from 'dayjs';
 import type { ICountryType } from '@utils/interfaces/countryType';
@@ -13,7 +13,7 @@ export const registerNewUser = createAsyncThunk(
         password: encrypt(state.registerAccount.password),
         ...stateBody,
       };
-      const response = await post('registerNewUser', submitBody);
+      await post('registerNewUser', submitBody);
       localStorage.clear();
       localStorage.setItem('avatar', '');
     } catch (error) {
