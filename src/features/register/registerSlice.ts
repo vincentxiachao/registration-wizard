@@ -14,8 +14,6 @@ export const registerNewUser = createAsyncThunk(
         ...stateBody,
       };
       const response = await post('registerNewUser', submitBody);
-      console.log(response);
-      console.log('submission succeed!');
       localStorage.clear();
       localStorage.setItem('avatar', '');
     } catch (error) {
