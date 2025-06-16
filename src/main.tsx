@@ -36,18 +36,22 @@ const LazyConfirm = lazy(() =>
 
 const router = createBrowserRouter([
   {
-    Component: App,
+    element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: '/',
-        Component: Layout,
+        element: <Layout />,
         errorElement: <ErrorPage />,
         children: [
-          { index: true, path: 'home', Component: Home },
+          {
+            index: true,
+            path: 'home',
+            element: <Home />,
+          },
           {
             path: 'register',
-            Component: RegisterPage,
+            element: <RegisterPage />,
             children: [
               {
                 index: true,
