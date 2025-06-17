@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   Stepper,
   Step,
@@ -23,8 +23,28 @@ import {
 import type { AppDispatch } from '../store';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '@utils/hooks/useDebounce';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+const LazyBasicInfo = lazy(() =>
+  import('@features/register/components/RegisterBasicInfo').then(
+    ({ RegisterBasicInfo }) => ({ default: RegisterBasicInfo })
+  )
+);
+const LazyDetails = lazy(() =>
+  import('@features/register/components/RegisterDetails').then(
+    ({ RegisterDetails }) => ({ default: RegisterDetails })
+  )
+);
+const LazyAccount = lazy(() =>
+  import('@features/register/components/RegisterAccount').then(
+    ({ RegisterAccount }) => ({ default: RegisterAccount })
+  )
+);
+const LazyConfirm = lazy(() =>
+  import('@features/register/components/RegisterConfirm').then(
+    ({ RegisterConfirm }) => ({ default: RegisterConfirm })
+  )
+);
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false); // State to control snackbar visibility
@@ -53,7 +73,7 @@ export default function RegisterPage() {
       localStorage.setItem('avatar', '');
       dispatch(resetState());
     };
-  }, [dispatch, navigate]);
+  }, [dispatch]);
   useEffect(() => {
     if (
       (isBasicInfoFilled && activeStep === 0) ||
@@ -74,18 +94,9 @@ export default function RegisterPage() {
       }, 3000);
     }
   }, [submissionDone]);
-  const stepperToUrlMap = new Map([
-    [0, 'basic-info'],
-    [1, 'details'],
-    [2, 'account'],
-    [3, 'confirm'],
-  ]);
-  useEffect(() => {
-    navigate(`/register/${stepperToUrlMap.get(activeStep)}`);
-  }, [activeStep]);
+
   const handleNext = () => {
     dispatch(cacheState());
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
   const steps = [
@@ -118,6 +129,36 @@ export default function RegisterPage() {
     }
   };
 
+  const getStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return (
+          <Suspense>
+            <LazyBasicInfo />
+          </Suspense>
+        );
+      case 1:
+        return (
+          <Suspense>
+            <LazyDetails />
+          </Suspense>
+        );
+      case 2:
+        return (
+          <Suspense>
+            <LazyAccount />
+          </Suspense>
+        );
+      case 3:
+        return (
+          <Suspense>
+            <LazyConfirm />
+          </Suspense>
+        );
+      default:
+        return '未知步骤';
+    }
+  };
   return (
     <main className='flex h-8/12 flex-col'>
       <Typography variant='h2' className='mb-4 flex items-end justify-between'>
@@ -128,8 +169,7 @@ export default function RegisterPage() {
           <Typography>Register Successfully!</Typography>
         ) : (
           <>
-            <Outlet></Outlet>
-            {/* {getStepContent(activeStep)} */}
+            {getStepContent(activeStep)}
             <Stepper activeStep={activeStep}>
               {steps.map((label) => (
                 <Step key={label}>
