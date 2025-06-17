@@ -192,6 +192,7 @@ export const selectIsDateOfBirthValid = (state: RootState) => {
     const selectedDate = new Date(dateOfBirth).getTime();
     return selectedDate < today;
   }
+  return false;
 };
 export const selectInvalidEmail = (state: RootState) => {
   return !validateEmail(state.registerAccount.registerInfo.email);

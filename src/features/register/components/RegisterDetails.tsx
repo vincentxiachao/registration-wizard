@@ -31,7 +31,6 @@ function CountrySelect() {
     newVal: ICountryType | null
   ) => {
     e.preventDefault();
-    e.stopPropagation();
     dispatch(
       fillDetails({ newValue: newVal ? newVal : null, type: 'EDIT_COUNTRY' })
     );

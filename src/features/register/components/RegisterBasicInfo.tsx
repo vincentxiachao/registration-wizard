@@ -19,24 +19,15 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/en';
 import type { PickerValue } from 'node_modules/@mui/x-date-pickers/esm/internals/models/value';
 export const RegisterBasicInfo = () => {
-  const firstName = useSelector(selectFirstName);
   const lastName = useSelector(selectLastName);
   const dateOfBirth = useSelector(selectDateOfBirth);
   const isDuplicateUsername = useSelector(selectDuplicateUsername);
   const isDateValid = useSelector(selectIsDateOfBirthValid);
-  const [firstNameTouched, setFirstNameTouched] = useState(false);
   const [lastNameTouched, setLastNameTouched] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-
   const { t } = useTranslation();
-  const onFirstNameBlur = () => {
-    setFirstNameTouched(true);
-  };
   const onLastNameBlur = () => {
     setLastNameTouched(true);
-  };
-  const onFirstNameChanged = (newVal: string) => {
-    dispatch(fillBasicInfo({ newValue: newVal, type: 'EDIT_FIRST_NAME' }));
   };
   const onLastNameChanged = (newVal: string) => {
     dispatch(fillBasicInfo({ newValue: newVal, type: 'EDIT_LAST_NAME' }));
@@ -56,20 +47,7 @@ export const RegisterBasicInfo = () => {
     <>
       <Box className='flex h-full flex-col content-center justify-center'>
         <Stack className='w-full items-center' spacing={10}>
-          <TextField
-            className='w-1/2'
-            label={t('firstName')}
-            name='firstName'
-            value={firstName}
-            onBlur={() => onFirstNameBlur()}
-            onChange={(e) => onFirstNameChanged(e.target.value)}
-            margin='normal'
-            variant='standard'
-            required
-            data-testid='register-basic-first-name-input'
-            error={firstName === '' && firstNameTouched}
-            helperText={isDuplicateUsername ? t('duplicateUsername') : ''}
-          />
+          <FirstName />
           <TextField
             className='w-1/2'
             label={t('lastName')}
@@ -110,3 +88,30 @@ export const RegisterBasicInfo = () => {
     </>
   );
 };
+function FirstName() {
+  const { t } = useTranslation();
+  const firstName = useSelector(selectFirstName);
+  const dispatch = useDispatch<AppDispatch>();
+  const [firstNameTouched, setFirstNameTouched] = useState(false);
+  const onFirstNameBlur = () => {
+    setFirstNameTouched(true);
+  };
+  const onFirstNameChanged = (newVal: string) => {
+    dispatch(fillBasicInfo({ newValue: newVal, type: 'EDIT_FIRST_NAME' }));
+  };
+  return (
+    <TextField
+      className='w-1/2'
+      label={t('firstName')}
+      name='firstName'
+      value={firstName}
+      onBlur={() => onFirstNameBlur()}
+      onChange={(e) => onFirstNameChanged(e.target.value)}
+      margin='normal'
+      variant='standard'
+      required
+      data-testid='register-basic-first-name-input'
+      error={firstName === '' && firstNameTouched}
+    />
+  );
+}
