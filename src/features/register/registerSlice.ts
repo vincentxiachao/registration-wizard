@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { get, post } from '../../utils/apiClientWithInterceptors';
 import { type RootState } from '../../store';
 import daysjs from 'dayjs';
@@ -163,9 +167,13 @@ export const selectRegisterState = (state: RootState) => state.registerAccount;
 export const selectFirstName = (state: RootState) => {
   return state.registerAccount.registerInfo.firstName;
 };
-export const selectLastName = (state: RootState) => {
-  return state.registerAccount.registerInfo.lastName;
-};
+// export const selectLastName = (state: RootState) => {
+//   return state.registerAccount.registerInfo.lastName;
+// };
+export const selectLastName = createSelector(
+  [selectRegisterState],
+  (registerState) => registerState.registerInfo.lastName
+);
 export const selectPassword = (state: RootState) =>
   state.registerAccount.password;
 export const selectConfirmPassword = (state: RootState) =>

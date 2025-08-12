@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState, useTransition } from 'react';
 import {
   Stepper,
   Step,
@@ -24,6 +24,7 @@ import type { AppDispatch } from '../store';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '@utils/hooks/useDebounce';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const LazyBasicInfo = lazy(() =>
   import('@features/register/components/RegisterBasicInfo').then(
@@ -45,7 +46,7 @@ const LazyConfirm = lazy(() =>
     ({ RegisterConfirm }) => ({ default: RegisterConfirm })
   )
 );
-export default function RegisterPage() {
+const RegisterPage = React.memo(function RegisterPage() {
   const { t } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false); // State to control snackbar visibility
   const isBasicInfoFilled = useSelector(selectIsBasicInfoFilled);
@@ -59,6 +60,7 @@ export default function RegisterPage() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  const [isPending, goNext] = useTransition();
   useEffect(() => {
     try {
       const cache = localStorage.getItem('registerAccount');
@@ -96,8 +98,10 @@ export default function RegisterPage() {
   }, [submissionDone]);
 
   const handleNext = () => {
-    dispatch(cacheState());
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    goNext(() => {
+      dispatch(cacheState());
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    });
   };
   const steps = [
     `${t('basicInfo')}`,
@@ -114,62 +118,33 @@ export default function RegisterPage() {
       console.log(error);
     }
   });
-  const getStepTitle = (step: number) => {
-    switch (step) {
-      case 0:
-        return `${t('basicInfo')}`;
-      case 1:
-        return `${t('moreAboutYou')}`;
-      case 2:
-        return `${t('accountInfo')}`;
-      case 3:
-        return `${t('confirmation')}`;
-      default:
-        return `${t('unknown')}`;
-    }
-  };
 
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return (
-          <Suspense>
-            <LazyBasicInfo />
-          </Suspense>
-        );
+        return <LazyBasicInfo />;
       case 1:
-        return (
-          <Suspense>
-            <LazyDetails />
-          </Suspense>
-        );
+        return <LazyDetails />;
       case 2:
-        return (
-          <Suspense>
-            <LazyAccount />
-          </Suspense>
-        );
+        return <LazyAccount />;
       case 3:
-        return (
-          <Suspense>
-            <LazyConfirm />
-          </Suspense>
-        );
+        return <LazyConfirm />;
       default:
         return '未知步骤';
     }
   };
   return (
     <main className='flex h-8/12 flex-col'>
-      <Typography variant='h2' className='mb-4 flex items-end justify-between'>
-        {getStepTitle(activeStep)}
-      </Typography>
+      <Typography
+        variant='h2'
+        className='mb-4 flex items-end justify-between'
+      ></Typography>
       <Box className='!mb-2 flex-1 flex flex-col'>
         {activeStep === steps.length ? (
           <Typography>Register Successfully!</Typography>
         ) : (
           <>
-            {getStepContent(activeStep)}
+            <Suspense>{getStepContent(activeStep)}</Suspense>
             <Stepper activeStep={activeStep}>
               {steps.map((label) => (
                 <Step key={label}>
@@ -189,6 +164,7 @@ export default function RegisterPage() {
               )}
               <Button
                 variant='contained'
+                className={isPending ? 'disabled' : ''}
                 data-testid='register-page-next-submit-button'
                 onClick={activeStep === 3 ? handleSubmit : handleNext}
                 disabled={disableNext || submissionDone}
@@ -210,4 +186,5 @@ export default function RegisterPage() {
       </Box>
     </main>
   );
-}
+});
+export default RegisterPage;

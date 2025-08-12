@@ -15,5 +15,24 @@
       "id": "bfed"
     }
   ],
-  "registerNewUser": []
+  "registerNewUser": [
+    {
+      "id": "c8c8",
+      "password": "fake-encryption123123123",
+      "email": "vincent2xia0625@163.com",
+      "firstName": "adsf",
+      "lastName": "123",
+      "dateOfBirth": "1988-06-25",
+      "country": {
+        "code": "AD",
+        "label": "Andorra",
+        "phone": "376"
+      },
+      "gender": {
+        "label": "Female",
+        "id": 1
+      },
+      "avatar": null
+    }
+  ]
 }
